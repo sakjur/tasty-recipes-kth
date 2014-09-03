@@ -1,0 +1,124 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{lastpage}
+\usepackage{pgf}
+\usepackage{wrapfig}
+\usepackage{fancyvrb}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+% Create header and footer
+\headheight 27pt
+\pagestyle{fancyplain}
+\lhead{\footnotesize{Internet Applications, ID1354}}
+\chead{\footnotesize{Assignment 1: HTML \& CSS}}
+\rhead{}
+\lfoot{}
+\cfoot{\thepage\ (\pageref{LastPage})}
+\rfoot{}
+
+% Create title page
+\title{Assignment 1: HTML \& CSS}
+\subtitle{Internet Applications, ID1354}
+\author{Emil Tullstedt [emiltu@kth.se]}
+\date{2014-09-02}
+
+\begin{document}
+
+\maketitle
+
+\section*{Tips for Report Writing}
+\textbf{REMOVE THIS SECTION BEFORE SUBMITTING THE REPORT.}\\
+
+\noindent \textit{Target audience for this report are people who have exactly the same skills as the author, except they do not know anything at all about the specific program described in the report.}
+
+Consider the following:
+
+\begin{itemize}
+  \item Is spelling and grammar correct? Is spoken language avoided? Is the report concise or unnecessarily long and wordy?
+
+  \item Does the report have a good structure with sections, subsections and paragraphs?
+
+  \item Is the solution clearly explained? Will the reader understand the program? What would you yourself want know if you read about the program, is that included in the report?
+
+  \item Does the report prove that the program is working? This can be done for example by providing printouts of test runs, user interface screen-shots or performance measurements.
+
+  \item Is the solution analyzed and evaluated? Are important properties of the program explained? Should there have been more extensive evaluation?
+
+  \item Is the development work analyzed? Is it clear what the author has learned during development? Is it clear which problems were faced during development and how they were solved?
+
+  \item Is the text clarified with code snippets, images or other figures? Avoid long code listings, include only the parts of the code that are relevant for the topic explained in the text. Remember that all figures (images, tables, graphs, code listings etc) should be numbered and have a short explaining text.
+\end{itemize}
+
+\section{Introduction}
+
+Shortly explain the task and the requirements on the solution.
+
+\section{Method}
+
+\subsection{Fonts}
+
+When developing a web site, one of the key elements to think about is which fonts are used. Trusting the default font to be a sane default is quite often problematic since font qualities generally differ greatly between different browsers. When using unicode emoticons for example, Twitter replaces them with images to stop the issue where different users sees different emoticons. This can, in the case of Twitter, mean the difference between people understanding each other and not. As thus, you may understand the importance of deciding for a font.
+
+I decided to stick at two fonts I download to the user because of the page load (see section \ref{subsec:PageWeight}).
+
+\subsection{Validation}
+
+\subsection{Page Weight}
+\label{subsec:PageWeight}
+
+One commonly too dismissed practice when developing for the web is caring about the users' resources. This is a dual-edged problem in that you may both off-load heavy calculations (with easy-controllable or unimportant answers) to the client, which is out of bounds for this course and assignment, but the problem is also revealed by simply not caring for the limited amount of resources available to a user.
+
+This is an increasingly large issue with a heavy increase of ISPs that impose some kind of rate limiting on their users, even at low levels of data transfer in the numbers of .5-5 GBs of data when talking about 4G (which is just a few minutes of downloading at full speed).
+
+\section{Result}
+
+Present the solution. Note that the goal is not primarily to explain your code, rather you should show that the solution meets the requirements. When doing that you will also have to, at least in important parts, explain your code.
+
+Remember to include user interface screen-shots, see Figure \ref{fig:ui}, code snippets, see Figure \ref{fig:code}, and other figures to illustrate your reasoning and show that your solution meets the requirements. Also remember that these figures must be referenced in the text.
+
+%\begin{figure}[h]
+%  \begin{center}
+%    \includegraphics[scale=0.3]{ui.jpg}
+%    \caption{A sample user interface screen-shot to illustrate caption (this text), numbering and reference in %text.}
+%    \label{fig:ui}
+%  \end{center}
+%\end{figure}
+
+%\begin{figure}[h]
+%  \begin{center}
+%    \includegraphics[scale=0.7]{code.png}
+%    \caption{A sample code extract. You get syntax highlighting if you take a screen-shot of the code in your editor instead of writing it in the document.}
+%    \label{fig:code}
+%  \end{center}
+%\end{figure}
+
+% The following lines show how to create a table.
+% \begin{table}[h]
+%   \centering
+%   \begin{tabular}{|l|r|r|}
+%     \hline
+%     kärnor & tid & uppsnabbning\\
+%     \hline
+%     1 & 400ms & 1\\
+%     \hline
+%     2 & 240ms & 1.7\\
+%     \hline
+%     4 & 140ms & 2.8\\
+%     \hline
+%   \end{tabular}
+%   \caption{A sample table.}
+%   \label{tab:results}
+% \end{table}
+
+\section{Discussion}
+
+Were the requirements met? What went well and what problems did you face? How were the problems solved? Should you have done something differently?
+
+\section{Comments About the Course}
+
+Any comment(s) related to this course instance or to coming instances is appreciated. \textit{Please also tell approximately how much time you spent on the assignment}, including lectures an exercises. This is of great help for course evaluation.
+
+\end{document}

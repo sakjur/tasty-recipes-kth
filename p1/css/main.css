@@ -1,13 +1,19 @@
-article
+section
 {
     background: #efefef;
     padding: 1em;
+}
+
+section h2
+{
+    font-family: lobster; 
 }
 
 body, html
 {
     background: #000033;
     font-family: lato;
+    font-size: 11pt;
     margin: 0;
 }
 
@@ -15,14 +21,16 @@ body, html
 {
     margin: 0 auto;
     max-width: 720px;
+    width: 720px;
 }
 
 footer
 {
     background: #000066;
     color: #cecece;
-    margin: 15 auto 0 auto;
-    padding: 10px;
+    margin: 0 auto 0 auto;
+    padding: 15px 0;
+    text-align: center;
     width: 100%;
 }
 
@@ -36,8 +44,7 @@ header h1
     display: inline-block;
     font-family: lobster, sans-serif;
     font-size: 2em;
-    margin-bottom: 1em;
-    margin-top: 1em;
+    margin: 1em 0 1em .5em;
 }
 
 nav
@@ -57,8 +64,121 @@ nav a
     width: 115px;
 }
 
+nav a.current
+{
+    background: #002277;
+}
+
 nav a:hover
 {
+    background: #220077;
     color: #efefef;
+}
+
+.week
+{
+}
+
+.weeknumber
+{
+    font-weight: bold;
+}
+
+.week .day:nth-of-type(2n)
+{
+    background: #9e9edd;
+}
+
+.day
+{
+    display: inline-block;
+    padding: 5px;
+    width: 80px;
+    height: 80px;
+    background: #efefef;
+    background-color: #9edd9e;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.day img
+{
+    display: block;
+    margin: 0 auto;
+}
+
+.day.empty
+{
+    background-color: #de9ede !important;
+}
+
+.day img
+{
+    width: 64px;
+    height: 64px;
+}
+
+@media (min-width: 1200px)
+{
+    #container
+    {
+        max-width: 1100px;
+        width: 1100px;
+    }
+
+    .day
+    {
+        width: 140px;
+        height: 140px;
+    }
+
+    .day img
+    {
+        width: 128px;
+        height: 128px;
+    }
+}
+
+@media (max-width: 720px)
+{
+    #container {
+        width: 100%;
+        margin: 0;
+    }
+
+    header h1 {
+        font-size: 1.2em !important;
+    }
+    
+    nav a {
+        display: inline-block;
+        margin: 0 1% 3px 1%;
+        width: 47%;
+    }
+
+    .day
+    {
+        display: block;
+        width: 100%;
+        height: auto;
+        background: #efefef;
+        background-color: #9edd9e;
+        text-align: center;
+    }
+
+    .day.empty
+    {
+        display: none;
+    }
+}
+
+@media (max-width: 480px)
+{
+    nav a {
+        clear: both;
+        display: block;
+        margin: 0 0 3px 0;
+        width: 100%;
+    }
 }
 
