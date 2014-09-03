@@ -130,6 +130,48 @@ nav a:hover
     height: 64px;
 }
 
+.nutrition .nutrition-row
+{
+    width:100%;
+    margin:0;
+    border: solid black;
+    border-width: 1px 1px 0px 1px;
+}
+
+.nutrition .nutrition-row:last-of-type
+{
+    border: 1px solid black;
+}
+
+.nutrition .nutrition-row .key
+{
+    display: inline-block;
+    width: 190px;
+    padding: 5px;
+    background: #7474AA;
+}
+
+.servings .servings-row
+{
+    width: 100%;
+    margin: 0;
+    border: solid black;
+    border-width: 1px 1px 0px 1px;
+}
+
+.servings .servings-row:last-of-type
+{
+    border: 1px solid black;
+}
+
+.servings .servings-row .key
+{
+    display: inline-block;
+    width: 190px;
+    padding: 5px;
+    background: #7474AA;
+}
+
 @media (min-width: 1200px)
 {
     #container
@@ -148,6 +190,19 @@ nav a:hover
     {
         width: 128px;
         height: 128px;
+    }
+
+    .nutrition
+    {
+        display: table-cell;
+        width: 520px;
+    }
+
+    .servings
+    {
+        display: table-cell;
+        width: 520px;
+        height: 100%;
     }
 }
 
@@ -191,6 +246,23 @@ nav a:hover
         display: block;
         margin: 0 0 3px 0;
         width: 100%;
+    }
+
+    .nutrition-row .key
+    {
+        display: block;
+        width: 100%;
+        padding: 5px 0;
+        background: #7474AA;
+        text-align: center;
+    }
+    
+    .nutrition-row .value
+    {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 5px 0;
     }
 }
 
