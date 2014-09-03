@@ -4,7 +4,19 @@ section
     padding: 1em;
 }
 
-section h2
+section a
+{
+    color: #000099;
+    font-style: oblique;
+    text-decoration: none;
+}
+
+section a:hover
+{
+    color: #990099;
+}
+
+section h2, h3
 {
     font-family: lobster; 
 }
@@ -19,7 +31,7 @@ body, html
 
 #container
 {
-    margin: 0 auto;
+    margin: 5px auto 35px auto;
     max-width: 720px;
     width: 720px;
 }
