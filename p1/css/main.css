@@ -172,6 +172,58 @@ nav a:hover
     background: #7474AA;
 }
 
+.food-image
+{
+    box-shadow: 2px 2px 5px #000000;
+    float:right;
+}
+
+.comment
+{
+    display: block;
+    margin: 5px 0;
+    background: #ceffce;
+}
+
+#comment-box:nth-child(even) .comment
+{
+    background: #ffcece;
+}
+
+#comment-box:nth-child(even) .comment-meta
+{
+    background: #AA7474;
+}
+
+.comment .comment-meta
+{
+    display: table-cell;
+    width: 190px;
+    padding: 5px;
+    background: #74AA74;
+}
+
+.comment .comment-meta img
+{
+    float: right;
+}
+
+.comment .comment-text
+{
+    display: table-cell;
+    width: 480px;
+}
+
+.comment .comment-meta .name
+{
+    display: block;
+}
+
+.comment .comment-meta .date
+{
+    display: block;
+}
+
 @media (min-width: 1200px)
 {
     #container
@@ -203,6 +255,21 @@ nav a:hover
         display: table-cell;
         width: 520px;
         height: 100%;
+    }
+
+    .food-image
+    {
+        float: right;
+    }
+
+    .comment .comment-meta
+    {
+        width: 260px;
+    }
+    
+    .comment .comment-text
+    {
+        width: 660px;
     }
 }
 
@@ -237,6 +304,26 @@ nav a:hover
     {
         display: none;
     }
+
+    .food-image
+    {
+        float: none;
+    }
+
+    .comment .comment-meta
+    {
+        display: block;
+        padding: 5px 0;
+        width: 100%;
+    }
+
+    .comment .comment-text
+    {
+        display: block;
+        width: 100%;
+        margin: 0 auto;
+        padding: 5px 0;
+    }
 }
 
 @media (max-width: 480px)
@@ -248,7 +335,7 @@ nav a:hover
         width: 100%;
     }
 
-    .nutrition-row .key
+    .nutrition .nutrition-row .key
     {
         display: block;
         width: 100%;
@@ -257,12 +344,13 @@ nav a:hover
         text-align: center;
     }
     
-    .nutrition-row .value
+    .nutrition .nutrition-row .value
     {
         display: block;
         width: 100%;
         text-align: center;
         padding: 5px 0;
     }
+
 }
 
