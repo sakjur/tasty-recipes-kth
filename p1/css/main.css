@@ -1,3 +1,8 @@
+a img { /* ie rage */
+    border:none;
+    outline:none;
+}
+
 section
 {
     background: #efefef;
@@ -185,12 +190,12 @@ nav a:hover
     background: #ceffce;
 }
 
-#comment-box:nth-child(even) .comment
+#comment-box .comment:nth-of-type(even) 
 {
     background: #ffcece;
 }
 
-#comment-box:nth-child(even) .comment-meta
+#comment-box .comment:nth-of-type(even) .comment-meta
 {
     background: #AA7474;
 }

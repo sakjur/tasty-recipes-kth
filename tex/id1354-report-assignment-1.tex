@@ -29,55 +29,56 @@
 
 \maketitle
 
-\section*{Tips for Report Writing}
-\textbf{REMOVE THIS SECTION BEFORE SUBMITTING THE REPORT.}\\
-
-\noindent \textit{Target audience for this report are people who have exactly the same skills as the author, except they do not know anything at all about the specific program described in the report.}
-
-Consider the following:
-
-\begin{itemize}
-  \item Is spelling and grammar correct? Is spoken language avoided? Is the report concise or unnecessarily long and wordy?
-
-  \item Does the report have a good structure with sections, subsections and paragraphs?
-
-  \item Is the solution clearly explained? Will the reader understand the program? What would you yourself want know if you read about the program, is that included in the report?
-
-  \item Does the report prove that the program is working? This can be done for example by providing printouts of test runs, user interface screen-shots or performance measurements.
-
-  \item Is the solution analyzed and evaluated? Are important properties of the program explained? Should there have been more extensive evaluation?
-
-  \item Is the development work analyzed? Is it clear what the author has learned during development? Is it clear which problems were faced during development and how they were solved?
-
-  \item Is the text clarified with code snippets, images or other figures? Avoid long code listings, include only the parts of the code that are relevant for the topic explained in the text. Remember that all figures (images, tables, graphs, code listings etc) should be numbered and have a short explaining text.
-\end{itemize}
-
 \section{Introduction}
 
 Shortly explain the task and the requirements on the solution.
 
 \section{Method}
 
+\subsection{HTML}
+
+HTML is the single uniting factor of every website. A well programmed text based informational website has clear HTML which can be understood both when rendered \textit{as-is} without accompanying JavaScript or CSS and also by someone who has a basic level of understanding by looking at the HTML in text format.
+
+This level of clarity was achieved in this project by making sure to add the HTML structure first and afterward making sure it looks nice and works well by adding JavaScript and CSS behavior, using the \texttt{h1-h6} for different title layers, the new HTML5 section tags and generally naming stuff understandably.
+
+\subsection{CSS}
+
+The standardized way of telling browsers how websites are layouted is called CSS, or Cascading Style Sheets. CSS works by looking for the most specific definition of style available, and with the "new" CSS3 \textit{media queries}, the site can be reflowed depending on what is being used for viewing the website. The project relies heavily on the different width features of these media queries to offer a sensible viewing experience on any commonly found screen size.
+
 \subsection{Fonts}
 
 When developing a web site, one of the key elements to think about is which fonts are used. Trusting the default font to be a sane default is quite often problematic since font qualities generally differ greatly between different browsers. When using unicode emoticons for example, Twitter replaces them with images to stop the issue where different users sees different emoticons. This can, in the case of Twitter, mean the difference between people understanding each other and not. As thus, you may understand the importance of deciding for a font.
 
-I decided to stick at two fonts I download to the user because of the page load (see section \ref{subsec:PageWeight}).
+How many fonts that are used in a website is a combination of aesthetics and page weight (see section \ref{subsec:PageWeight}). Simply put, a stylized font for titles and readable font for the text is probably the best choice.
+
+When having decided for a font, it is important to offer the font in different font-formats to the end user. This can either be achieved by using one of many font delivery networks out there or if you wish to serve the font from your own server by using a conversion tool, e.g. FontSquirrel's webfont generator\footnote{http://www.fontsquirrel.com/tools/webfont-generator}.
 
 \subsection{Validation}
+
+When developing for the web, making sure the website works in all different kinds of browsers is important as the purpose of the web is to have a single point of reference which is freely accessible for everyone. Following the standards isn't hard when you use the proper tools to ensure compliance with different browsers. A sample set of tools that are used to ensure compliance in this project are:
+
+\begin{enumerate}
+\item The W3C HTML validator\footnote{http://validator.w3.org} and it's accompanying CSS validator
+\item The Can I Use website\footnote{http://caniuse.com/} lists which features are compatible with which browser
+\item The HTML5 specifications\footnote{http://www.w3.org/TR/html5/}
+\item The CSS3 media queries specification\footnote{http://www.w3.org/TR/css3-mediaqueries/}
+\item Microsoft's website screenshot tool\footnote{https://modern.ie/en-gb/screenshots} to quickly get images of the websites in different browsers
+\end{enumerate}
+
+By intelligently using these tools and resources often and throughout the development time can be shortened as the need for time-consuming browser-specific fixes can be cut.
 
 \subsection{Page Weight}
 \label{subsec:PageWeight}
 
-One commonly too dismissed practice when developing for the web is caring about the users' resources. This is a dual-edged problem in that you may both off-load heavy calculations (with easy-controllable or unimportant answers) to the client, which is out of bounds for this course and assignment, but the problem is also revealed by simply not caring for the limited amount of resources available to a user.
+One easily dismissed practice when developing for the web is caring for the users' resources. The big problem is when developers don't care for the limited amount of resources available to a user.
 
-This is an increasingly large issue with a heavy increase of ISPs that impose some kind of rate limiting on their users, even at low levels of data transfer in the numbers of .5-5 GBs of data when talking about 4G (which is just a few minutes of downloading at full speed).
+Limited resources is an increasingly large issue with a heavy increase of ISPs that impose some kind of rate limiting on their users, even at low levels of data transfer in the numbers of .5-5 GB/month of data in 4G data rates. Even 5 GB is just a few minutes of downloading at full speed.
 
 \section{Result}
 
-Present the solution. Note that the goal is not primarily to explain your code, rather you should show that the solution meets the requirements. When doing that you will also have to, at least in important parts, explain your code.
-
 Remember to include user interface screen-shots, see Figure \ref{fig:ui}, code snippets, see Figure \ref{fig:code}, and other figures to illustrate your reasoning and show that your solution meets the requirements. Also remember that these figures must be referenced in the text.
+
+For the site to feel snappy the images that are being loaded on the different pages needs to be sized correctly already on the server. By using the \texttt{ImageMagick} toolkit to re-size the images to a couple of different resolutions twenty-fold savings in terms of file size could be made, as shown in table \ref{tab:ressize}. Because the HTML-\texttt{picture} element isn't implemented everywhere yet, JavaScript is still needed in order to actually load larger images for bigger viewports. Thus the larger scale images weren't put to use anywhere in this version of the website.
 
 %\begin{figure}[h]
 %  \begin{center}
@@ -96,22 +97,26 @@ Remember to include user interface screen-shots, see Figure \ref{fig:ui}, code s
 %\end{figure}
 
 % The following lines show how to create a table.
-% \begin{table}[h]
-%   \centering
-%   \begin{tabular}{|l|r|r|}
-%     \hline
-%     kärnor & tid & uppsnabbning\\
-%     \hline
-%     1 & 400ms & 1\\
-%     \hline
-%     2 & 240ms & 1.7\\
-%     \hline
-%     4 & 140ms & 2.8\\
-%     \hline
-%   \end{tabular}
-%   \caption{A sample table.}
-%   \label{tab:results}
-% \end{table}
+ \begin{table}[h]
+   \centering
+   \begin{tabular}{|l|r|r|}
+     \hline
+     File & Resolution & Size\\
+     \hline
+     meatballs.jpg & 2048x1536 & 1.606MB\\
+     \hline
+     meatballs720.jpg & 720x540 & 309KB\\
+	 \hline
+	 meatballs480.jpg & 480x360 & 172KB\\   
+     \hline
+     meatballs320.jpg & 320x240 & 103KB\\
+     \hline
+     meatballs128.jpg & 128x96 & 51.8KB\\
+     \hline
+   \end{tabular}
+   \caption{Resolution-Size relationship}
+   \label{tab:ressize}
+ \end{table}
 
 \section{Discussion}
 
