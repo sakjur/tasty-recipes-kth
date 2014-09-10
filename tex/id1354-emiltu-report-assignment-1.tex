@@ -210,7 +210,7 @@ For the "empty" dates (i.e. offset days in the calendar, either at the beginning
   \end{center}
 \end{figure}
 
-After having developed the calendar, it made sense to work on the recipes first to then go back to work on making the front page welcoming. The recipes was the core element of the page and also the most tricky to accomplish.
+After having developed the calendar, it made sense to work on the recipes. The recipes are the core element of the site and also the most tricky to accomplish.
 The issues when developing the recipe pages was mostly aesthetics as there is a need for the website to not feel uninviting to a mobile user and still re-flow good enough to feel inviting for the standard resolution user. Once again, this is pretty much about vertical or horizontal placement of the content. Part of this difference can be seen by comparing figures \ref{fig:pancakelow} and \ref{fig:pancakestd}.
 
 The recipe page can be divided into logical units consisting of the following:
@@ -274,18 +274,44 @@ When having done the pancake recipe, it was just a matter of entering different 
 
 \section{Discussion}
 
+\subsection{Basic Requirements}
 \begin{itemize}
 \item \textbf{Install a web server} - See subsection \ref{subsec:httpd} for details.
-\item \textbf{Create HTML and CSS files} - As per section \ref{sec:results}.
+\item \textbf{Create HTML and CSS files} - As per section \ref{sec:results} the code validates as shown in figure \ref{fig:valid}.
+\item \textbf{Following basic heuristics for user interface design} - this is implied by section \ref{sec:results}.
 \end{itemize}
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.3]{valid.png}
+    \caption{Validation results for the different parts of the site}
+    \label{fig:valid}
+  \end{center}
+\end{figure}
+
+\subsection{Adaptiveness}
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.3]{pancakelow1.png}
+    \caption{How the menu adapts for lower resolutions}
+    \label{fig:menu-adapt}
+  \end{center}
+\end{figure}
+
+The site is built to feel responsive and work under any browser. By using the built-in Firefox "responsive web development" toolkit this was able to be tested for every change of the page. With the utilization of media queries, the site makes sense on all kinds of different sized screens.
+
+\subsection{Cross-Browser Compatibility}
+
+The site was developed with using "safe" standards in mind, which means that the website \textit{should} work under any modern browser. This was further tested using Microsoft's screenshot service to take screenshots in all different kinds of browsers\footnote{This can be done by the reader by pointing the tool at http://modern.ie/screenshots to the website at http://people.kth.se/$\sim$emiltu/p1}.
 
 \subsection{Web Server Information}
 \label{subsec:httpd}
 
-Setting up a web server on Fedora is a matter of \texttt{sudo yum install httpd && sudo systemctl start httpd}. This server can then be extended to accommodate server side page generation, such as PHP or WSGI for Python, which is yet to be done.
+Setting up a web server on Fedora is a matter of \texttt{yum install httpd} and \textit{systemctl start httpd}. This server can then be extended to accommodate server side page generation, such as PHP or WSGI for Python, which is yet to be done.
 
-\begin{lstlistings}
-unary Projects/id1354 » yum info httpd                                                                                                       
+\begin{lstlisting}
+unary Projects/id1354 $ yum info httpd                                                                                                       
 Loaded plugins: langpacks
 
 Installed Packages
@@ -300,6 +326,6 @@ URL         : http://httpd.apache.org/
 License     : ASL 2.0
 Description : The Apache HTTP Server is a powerful, efficient, and extensible
             : web server.
-\end{lstlistings}
+\end{lstlisting}
 
 \end{document}
