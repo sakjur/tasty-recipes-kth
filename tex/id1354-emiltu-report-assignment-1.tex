@@ -9,6 +9,11 @@
 \usepackage{fancyhdr}
 \usepackage{listings}
 \pagestyle{fancy}
+\usepackage{libertine}
+\renewcommand*\familydefault{\sfdefault}  %% Only if the base font of the document is to be sans serif
+\usepackage[T1]{fontenc}
+\usepackage{courier}
+\usepackage[parfill]{parskip}
 
 \graphicspath{ {./images/} }
 
@@ -91,6 +96,7 @@ One easily dismissed practice when developing for the web is caring for the user
 Limited resources is an increasingly large issue with a heavy increase of ISPs that impose some kind of rate limiting on their users, even at low levels of data transfer in the numbers of .5-5 GB/month of data in 4G data rates. Even 5 GB is just a few minutes of downloading at full speed.
 
 \section{Result}
+\label{sec:results}
 
 The fonts that were chosen to use for the project site is Lobster and Lato according to the suggestions from subsection \ref{subsec:Fonts} where Lobster was used as a title font and Lato was used for the body. The fonts used can be seen in figure \ref{fig:fonts}.
 
@@ -153,6 +159,7 @@ When the website was developed, the first thing to do was a super simple front p
 \end{figure}
 
 Another advantage by doing a clean structure is that it works even in text based web browser, as demonstrated in figure \ref{fig:lynx}. After this, the structure was stylized using CSS, resulting in figure \ref{fig:early frontpage}. Using CSS with media queries, the website could easily adapt for four different dimensions 
+
 \begin{enumerate}
 \item \textit{low resolution} mostly vertical mode (for screen-sizes 320-480px in width)
 \item \textit{mediumlow resolution} for tablets and landscape phones (sizes between 480-720px), which has a few horizontal properties, but otherwise is mostly like the low resolution mode.
@@ -172,7 +179,7 @@ Another advantage by doing a clean structure is that it works even in text based
   \begin{center}
     \includegraphics[scale=0.4]{calendarvert.png}
     \caption{The mobile and low-resolution screen version of the calendar}
-    \label{fig:calgrid}
+    \label{fig:calvert}
   \end{center}
 \end{figure}
 
@@ -187,9 +194,68 @@ The calendar's variable grid look is made up using the CSS selectors \texttt{:nt
 For the "empty" dates (i.e. offset days in the calendar, either at the beginning or end of the month\footnote{Unless you're changing calendar system from Julian to Gregorian or vice verse. In that case, you'll probably need a few "empty" days in the middle of the month}) another class \texttt{empty} was used to extinguish these days from existing dates and enabling them to be removed in the low resolution versions.
 
 %images for recipes
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.4]{pancakestd1.png}
+    \caption{Recipe overview in standard resolution}
+    \label{fig:pancakestd}
+  \end{center}
+\end{figure}
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.4]{pancakelow2.png}
+    \caption{Recipe overview in a low resolution}
+    \label{fig:pancakelow}
+  \end{center}
+\end{figure}
 
 After having developed the calendar, it made sense to work on the recipes first to then go back to work on making the front page welcoming. The recipes was the core element of the page and also the most tricky to accomplish.
-The issue when developing the recipe pages was mostly an aesthetic issue, one that prevails in the final version for this assignment and, without causing any 
+The issues when developing the recipe pages was mostly aesthetics as there is a need for the website to not feel uninviting to a mobile user and still re-flow good enough to feel inviting for the standard resolution user. Once again, this is pretty much about vertical or horizontal placement of the content. Part of this difference can be seen by comparing figures \ref{fig:pancakelow} and \ref{fig:pancakestd}.
+
+The recipe page can be divided into logical units consisting of the following:
+
+\begin{enumerate}
+\item Title
+\item Food picture
+\item Declaration of content (ingredients and such)
+\item The actual recipe
+\item Nutrition values
+\item Servings information
+\item Commentary
+\end{enumerate}
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.3]{pancakelynxboth.png}
+    \caption{The recipe page in a text based browser}
+    \label{fig:pancakelynx}
+  \end{center}
+\end{figure}
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.3]{pancakemedium1.png}
+    \caption{The pancake recipe as shown on in the mediumlow resolution}
+    \label{fig:pancakemedium}
+  \end{center}
+\end{figure}
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.3]{pancakehigh1.png}
+    \caption{The pancake recipe as shown on in high resolution - note how the significant difference between this and figure \ref{fig:pancakestd} is that the high resolution version places nutrition values and servings recommendations side-by-side to save vertical space.}
+    \label{fig:pancakehigh}
+  \end{center}
+\end{figure}
+
+Once again, it makes a whole lot sense to look at the website without CSS as in figure \ref{fig:pancakelynx} to ensure this layout is logical even for people who haven't got access to a modern browser. When having made sure the layout makes sense in the terms of HTML, it's not a difficult task to make the CSS that accompanies the site for the different sizes.
+
+There really isn't many newly introduced techniques in the recipe page, mostly reusing what was used to make the calendar in a clever way. Unfortunately, as CSS isn't a programming language, code reuse generally doesn't mean you don't have to write the code again, but the techniques are shared between the calendar and the recipe site.
+
+One difference that can be noted between the high and mediumlow resolutions figures \ref{fig:pancakehigh} and \ref{fig:pancakemedium} is how the comments are re-flowed to save horizontal space by having their user information above the comment rather than to the left of it in the lower resolutions, while in standard resolution and above the vertical space is more interesting and thus the user information is placed left to the comment. By using \texttt{media queries}, this was quite easily accomplished.
+
+When having done the pancake recipe, it was just a matter of entering different data for the meatballs recipe. The difference between these two pages are simply a matter of content.
 
 \subsection{index.html}
 \lstinputlisting[language=HTML]{../p1/index.html}
@@ -208,6 +274,32 @@ The issue when developing the recipe pages was mostly an aesthetic issue, one th
 
 \section{Discussion}
 
-Were the requirements met? What went well and what problems did you face? How were the problems solved? Should you have done something differently?
+\begin{itemize}
+\item \textbf{Install a web server} - See subsection \ref{subsec:httpd} for details.
+\item \textbf{Create HTML and CSS files} - As per section \ref{sec:results}.
+\end{itemize}
+
+\subsection{Web Server Information}
+\label{subsec:httpd}
+
+Setting up a web server on Fedora is a matter of \texttt{sudo yum install httpd && sudo systemctl start httpd}. This server can then be extended to accommodate server side page generation, such as PHP or WSGI for Python, which is yet to be done.
+
+\begin{lstlistings}
+unary Projects/id1354 » yum info httpd                                                                                                       
+Loaded plugins: langpacks
+
+Installed Packages
+Name        : httpd
+Arch        : x86_64
+Version     : 2.4.10
+Release     : 1.fc20
+Size        : 3.8 M
+Repo        : installed
+Summary     : Apache HTTP Server
+URL         : http://httpd.apache.org/
+License     : ASL 2.0
+Description : The Apache HTTP Server is a powerful, efficient, and extensible
+            : web server.
+\end{lstlistings}
 
 \end{document}
