@@ -7,7 +7,10 @@
 \usepackage{wrapfig}
 \usepackage{fancyvrb}
 \usepackage{fancyhdr}
+\usepackage{listings}
 \pagestyle{fancy}
+
+\graphicspath{ {./images/} }
 
 % Create header and footer
 \headheight 27pt
@@ -24,6 +27,18 @@
 \subtitle{Internet Applications, ID1354}
 \author{Emil Tullstedt [emiltu@kth.se]}
 \date{2014-09-02}
+
+\lstset{
+	basicstyle=\footnotesize\ttfamily, 
+	numbers=left,
+	breaklines=true,
+	frame=l,
+	keywordstyle=\bfseries\color{blue!40!black},
+    stringstyle=\color{red},
+    commentstyle=\color{green},
+    identifierstyle=\color{black},
+    showstringspaces=false
+}
 
 \begin{document}
 
@@ -46,6 +61,7 @@ This level of clarity was achieved in this project by making sure to add the HTM
 The standardized way of telling browsers how websites are layouted is called CSS, or Cascading Style Sheets. CSS works by looking for the most specific definition of style available, and with the "new" CSS3 \textit{media queries}, the site can be reflowed depending on what is being used for viewing the website. The project relies heavily on the different width features of these media queries to offer a sensible viewing experience on any commonly found screen size.
 
 \subsection{Fonts}
+\label{subsec:Fonts}
 
 When developing a web site, one of the key elements to think about is which fonts are used. Trusting the default font to be a sane default is quite often problematic since font qualities generally differ greatly between different browsers. When using unicode emoticons for example, Twitter replaces them with images to stop the issue where different users sees different emoticons. This can, in the case of Twitter, mean the difference between people understanding each other and not. As thus, you may understand the importance of deciding for a font.
 
@@ -76,25 +92,17 @@ Limited resources is an increasingly large issue with a heavy increase of ISPs t
 
 \section{Result}
 
-Remember to include user interface screen-shots, see Figure \ref{fig:ui}, code snippets, see Figure \ref{fig:code}, and other figures to illustrate your reasoning and show that your solution meets the requirements. Also remember that these figures must be referenced in the text.
+The fonts that were chosen to use for the project site is Lobster and Lato according to the suggestions from subsection \ref{subsec:Fonts} where Lobster was used as a title font and Lato was used for the body. The fonts used can be seen in figure \ref{fig:fonts}.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[scale=0.3]{fonts.png}
+    \caption{The fonts used for the website}
+    \label{fig:fonts}
+  \end{center}
+\end{figure}
 
 For the site to feel snappy the images that are being loaded on the different pages needs to be sized correctly already on the server. By using the \texttt{ImageMagick} toolkit to re-size the images to a couple of different resolutions twenty-fold savings in terms of file size could be made, as shown in table \ref{tab:ressize}. Because the HTML-\texttt{picture} element isn't implemented everywhere yet, JavaScript is still needed in order to actually load larger images for bigger viewports. Thus the larger scale images weren't put to use anywhere in this version of the website.
-
-%\begin{figure}[h]
-%  \begin{center}
-%    \includegraphics[scale=0.3]{ui.jpg}
-%    \caption{}
-%    \label{fig:ui}
-%  \end{center}
-%\end{figure}
-
-%\begin{figure}[h]
-%  \begin{center}
-%    \includegraphics[scale=0.7]{code.png}
-%    \caption{A sample code extract. You get syntax highlighting if you take a screen-shot of the code in your editor instead of writing it in the document.}
-%    \label{fig:code}
-%  \end{center}
-%\end{figure}
 
 % The following lines show how to create a table.
  \begin{table}[h]
@@ -118,12 +126,88 @@ For the site to feel snappy the images that are being loaded on the different pa
    \label{tab:ressize}
  \end{table}
 
+When the website was developed, the first thing to do was a super simple front page. This was achieved by first creating a HTML structure which contained the necessary HTML-wrappings and then adding CSS. By doing so, early versions of the site can be seen in figure \ref{fig:frontpage no css}.
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.6]{frontpageWOcss.png}
+    \caption{Early versions of the frontpage looks without any CSS}
+    \label{fig:frontpage no css}
+  \end{center}
+\end{figure}
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.4]{lynx.png}
+    \caption{The early version of the frontpage in a text based web browser (Lynx)}
+    \label{fig:lynx}
+  \end{center}
+\end{figure}
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.4]{frontpage1.png}
+    \caption{The early version of the frontpage with CSS}
+    \label{fig:early frontpage}
+  \end{center}
+\end{figure}
+
+Another advantage by doing a clean structure is that it works even in text based web browser, as demonstrated in figure \ref{fig:lynx}. After this, the structure was stylized using CSS, resulting in figure \ref{fig:early frontpage}. Using CSS with media queries, the website could easily adapt for four different dimensions 
+\begin{enumerate}
+\item \textit{low resolution} mostly vertical mode (for screen-sizes 320-480px in width)
+\item \textit{mediumlow resolution} for tablets and landscape phones (sizes between 480-720px), which has a few horizontal properties, but otherwise is mostly like the low resolution mode.
+\item \textit{standard resolution} for screen-sizes 720 up to 1200px in width, which is the standard look of the website with lots of horizontal features
+\item \textit{high resolution} for screen-sizes above 1200px in width. This adds a few horizontal features to the standard resolution and makes the entire site wider. Higher width resolutions would get readability issues if this resolution were to be any wider, especially as there currently isn't any need for further use of the horizontal space.
+\end{enumerate}
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.4]{calendargrid.png}
+    \caption{The "standard" version of the calendar}
+    \label{fig:calgrid}
+  \end{center}
+\end{figure}
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.4]{calendarvert.png}
+    \caption{The mobile and low-resolution screen version of the calendar}
+    \label{fig:calgrid}
+  \end{center}
+\end{figure}
+
+When continuing with the development of the \texttt{calendar.html} page, the purpose was to make a grid-style one-month calendar, which typically can be achieved using tables in HTML. After some thought, using a \texttt{div}-based calendar scheme would simplify the accessibility and responsiveness customization process later on.
+
+The calendar is shown in the original grid layout style for the standard and above resolutions (see figure \ref{fig:calgrid}), but is rescaled into a vertical calendar look for smaller screens to make sure every item gets enough space to be clickable if there's a link to a recipe on the date (see figure \ref{fig:calvert}).
+
+The small screen calendar mode also collapses the empty dates so that they do not take up unnecessary space and forces the user to scroll excessively.
+
+The calendar's variable grid look is made up using the CSS selectors \texttt{:nth-type-of} which is fully supported in all modern browsers\footnote{See http://www.w3.org/TR/css3-selectors/}. CSS selectors is a good alternative to JavaScript for coloring certain child elements without breaking encapsulation and starting to tweak style in HTML or using multiple classes.
+
+For the "empty" dates (i.e. offset days in the calendar, either at the beginning or end of the month\footnote{Unless you're changing calendar system from Julian to Gregorian or vice verse. In that case, you'll probably need a few "empty" days in the middle of the month}) another class \texttt{empty} was used to extinguish these days from existing dates and enabling them to be removed in the low resolution versions.
+
+%images for recipes
+
+After having developed the calendar, it made sense to work on the recipes first to then go back to work on making the front page welcoming. The recipes was the core element of the page and also the most tricky to accomplish.
+The issue when developing the recipe pages was mostly an aesthetic issue, one that prevails in the final version for this assignment and, without causing any 
+
+\subsection{index.html}
+\lstinputlisting[language=HTML]{../p1/index.html}
+
+\subsection{calendar.html}
+\lstinputlisting[language=HTML]{../p1/calendar.html}
+
+\subsection{meatballs.html}
+\lstinputlisting[language=HTML]{../p1/meatballs.html}
+
+\subsection{pancakes.html}
+\lstinputlisting[language=HTML]{../p1/meatballs.html}
+
+\subsection{main.css}
+\lstinputlisting[language=HTML]{../p1/css/main.css}
+
 \section{Discussion}
 
 Were the requirements met? What went well and what problems did you face? How were the problems solved? Should you have done something differently?
-
-\section{Comments About the Course}
-
-Any comment(s) related to this course instance or to coming instances is appreciated. \textit{Please also tell approximately how much time you spent on the assignment}, including lectures an exercises. This is of great help for course evaluation.
 
 \end{document}

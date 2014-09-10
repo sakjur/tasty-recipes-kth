@@ -28,7 +28,7 @@ section h2, h3
 
 body, html
 {
-    background: #000033;
+    background: #7777aa;
     font-family: lato;
     font-size: 11pt;
     margin: 0;
@@ -43,7 +43,7 @@ body, html
 
 footer
 {
-    background: #000066;
+    background: #444499;
     color: #cecece;
     margin: 0 auto 0 auto;
     padding: 15px 0;
@@ -67,12 +67,12 @@ header h1
 nav
 {
     width: 100%;
-    background: #000055;
+    background: #444499;
 }
 
 nav a
 {
-    background: #000077;
+    background: #333377;
     color: #efefef;
     display: inline-block;
     padding: .5em 0 .5em 0;
@@ -355,6 +355,11 @@ nav a:hover
         width: 100%;
         text-align: center;
         padding: 5px 0;
+    }
+
+    .food-image
+    {
+        max-width:100%;
     }
 
 }
