@@ -93,6 +93,28 @@ nav a:hover
     color: #efefef;
 }
 
+nav .dropdown
+{
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index:100;
+}
+
+nav .dropdown a
+{
+    background: #ee6666;
+    display: block;
+    clear: both;
+    margin-top: 2px;   
+}
+
+nav .dropdown a.current 
+{
+    background: #990099;
+}
+
 .week
 {
 }
@@ -330,6 +352,20 @@ nav a:hover
         margin: 0 auto;
         padding: 5px 0;
     }
+    
+    nav .dropdown
+    {
+        display: none;
+        position: absolute;
+    }
+
+    nav .dropdown.show
+    {
+        display: block;
+        width:100%;
+    }
+
+
 }
 
 @media (max-width: 480px)
@@ -361,6 +397,17 @@ nav a:hover
     .food-image
     {
         max-width:100%;
+    }
+
+    nav .dropdown
+    {
+        display: none;
+        position: relative;
+    }
+
+    nav .dropdown.show
+    {
+        display: block;
     }
 
 }
