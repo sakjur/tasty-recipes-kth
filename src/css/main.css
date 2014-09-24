@@ -110,6 +110,14 @@ nav .dropdown a
     margin-top: 2px;   
 }
 
+nav .dropdown a:hover
+{
+    background: #992222;
+    color: #efefef;
+}
+
+
+
 nav .dropdown a.current 
 {
     background: #990099;
