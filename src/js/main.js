@@ -79,13 +79,21 @@ function register_edit_comment_button(button_class) {
         $('.edittext').val(current_content);
 
         $('.editform').submit(function (e) {
-            content = $('.edittext').val();
+            var content = $('.edittext').val();
             content = content.replace('\n', '<br />');
-            comment = $(this).closest('.comment-text');
-            comment.empty();
-            comment.append(content);
+            var new_comment = $(this).closest('.comment-text');
+            new_comment.empty();
+            new_comment.append(content);
             e.preventDefault();
         });
+        e.preventDefault();
+    });
+}
+
+function register_delete_comment (button_class) {
+    $('.' + button_class).click(function (e) {
+        var comment = $(this).closest('.comment');
+        comment.remove();
         e.preventDefault();
     });
 }
@@ -104,7 +112,8 @@ function register_comment_area (obj) {
             $(add_obj + " .new-comment").val("");
 
             if (!name || !email || !comment) {
-                alert("Could not submit comment without sensible content");
+                var emsg = "Cannot submit"; 
+                console.log(emsg);
                 e.preventDefault();
                 return;
             }
@@ -115,7 +124,8 @@ function register_comment_area (obj) {
                 email + '?d=retro&amp;s=42"';
             nc += ' alt="" />';
             nc += '<b class="author">' + name + '</b>';
-            nc += '<a class="edit" href="#">edit</a>';
+            nc += '<a class="edit" href="#">edit</a> ';
+            nc += '<a class="delete" href="#">delete</a>';
             nc += '<i class="date">' + get_current_time() + '</i>';
             nc += '</div>';
             nc += '<div class="comment-text">';
@@ -124,6 +134,7 @@ function register_comment_area (obj) {
 
             $(obj_box).prepend(nc);
             register_edit_comment_button('edit');
+            register_delete_comment('delete');
 
             e.preventDefault();
     });
