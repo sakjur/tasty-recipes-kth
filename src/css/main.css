@@ -252,6 +252,12 @@ nav .dropdown a.current
     display: block;
 }
 
+.new-comment textarea
+{
+    width: 300px;
+    height: 8em;
+}
+
 @media (min-width: 1200px)
 {
     #container
