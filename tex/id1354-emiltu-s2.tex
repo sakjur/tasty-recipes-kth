@@ -78,73 +78,212 @@ You also need to inform JSLint about the global variables, where the JQuery '\$'
 
 Furthermore, because of the issues that the design choices of JavaScript implicates, there is a syntax that allows developer to ask the browser to crash earlier when parsing what looks like invalid JavaScript. This is done by putting \texttt{"use strict";} at the top of either a JavaScript document or a function. The JSLint.com website complains about the use of the "use strict"; in top of the document and proposes you to put it at the top of the functions\footnote{You can do this by enclosing the entire document in an anonymous function - but for this purpose, that just makes the code uglier.} instead, but that is acceptable for non-reusable libraries.
 
-\subsection{•}
-
 \section{Result}
 \label{sec:results}
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[scale=0.3]{pancakelynxboth.png}
-    \caption{The recipe page in a text based browser}
-    \label{fig:pancakelynx}
+    \includegraphics[scale=0.3]{lynxjavascript.png}
+    \caption{The new version of the site works in Lynx}
+    \label{fig:lynxjs}
   \end{center}
 \end{figure}
-\section{Discussion}
 
-\subsection{Basic Requirements}
-\begin{itemize}
-\item \textbf{Dropdown menu} - See subsection \ref{subsec:dropdown} for details.
-\item \textbf{About us and contact us} -
-\item \textbf{JSLint} -
-\item \textbf{Using JQuery syntax} - 
-\end{itemize}
+When developing the JavaScript-version of the site, Knockout.js and other MVC implementations of JavaScript was ignored due to the fact that it is hard to develop working structures using the framework that is also accessible for all users. This caused a slight fracture to the encapsulation of the JavaScript code, but as seen in figure \ref{fig:lynxjs} assists in not breaking the site for very simple browsers.
+
+\subsection{Drop-down menu}
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[scale=0.3]{valid.png}
-    \caption{Validation results for the different parts of the site}
-    \label{fig:valid}
+    \includegraphics[scale=0.3]{noscript_recipe.png}
+    \caption{Alternative navigation for JavaScript-less browsers}
+    \label{fig:noscript}
   \end{center}
 \end{figure}
 
-\subsection{Adaptiveness}
+To add the drop-down menus to the site, the first step would be to make sure that there are sensible alternatives for browser which has no JavaScript support. This was done by adding "navigation" pages that contains the same information that is in the drop-down menus. This can be seen in figure \ref{fig:noscript}.
 
-\begin{figure}[!h]
-  \begin{center}
-    \includegraphics[scale=0.3]{pancakelow1.png}
-    \caption{How the menu adapts for lower resolutions}
-    \label{fig:menu-adapt}
-  \end{center}
-\end{figure}
+Without any JavaScript loaded, these navigation sites are the target of the links that later will unfold a menu. To make sure the tags doesn't take you to another page when JavaScript is activated, this line of code executes on the relevant a-tags.
+ 
+\begin{lstlisting}
+function unregister_link(obj)
+{
+    $(obj).attr('href', '#');
+}
+\end{lstlisting}
 
-The site is built to feel responsive and work under any browser. By using the built-in Firefox "responsive web development" toolkit this was able to be tested for every change of the page. With the utilization of media queries, the site makes sense on all kinds of different sized screens.
-
-\subsection{Cross-Browser Compatibility}
-
-The site was developed with using "safe" standards in mind, which means that the website \textit{should} work under any modern browser. This was further tested using Microsoft's screenshot service to take screenshots in all different kinds of browsers\footnote{This can be done by the reader by pointing the tool at http://modern.ie/screenshots to the website at http://people.kth.se/$\sim$emiltu/p1}.
-
-\subsection{Web Server Information}
-\label{subsec:httpd}
-
-Setting up a web server on Fedora is a matter of \texttt{yum install httpd} and \texttt{systemctl start httpd}. This server can then be extended to accommodate server side page generation, such as PHP or WSGI for Python, which is yet to be done.
+This function should be run in another function we call \texttt{register\_dropdown}. The drop-down menu is an absolute positioned div with \texttt{a}-tags for every item. This dropdown is styled using:
 
 \begin{lstlisting}
-unary Projects/id1354 $ yum info httpd                                                                                                       
-Loaded plugins: langpacks
-
-Installed Packages
-Name        : httpd
-Arch        : x86_64
-Version     : 2.4.10
-Release     : 1.fc20
-Size        : 3.8 M
-Repo        : installed
-Summary     : Apache HTTP Server
-URL         : http://httpd.apache.org/
-License     : ASL 2.0
-Description : The Apache HTTP Server is a powerful, efficient, and extensible
-            : web server.
+nav .dropdown                                                                   
+{                                                                               
+    display: none;                                                              
+    position: absolute;                                                         
+    left: 0;                                                                    
+    top: 0;                                                                     
+    z-index:100;                                                                
+}                                                                               
+                                                                                
+nav .dropdown a                                                                 
+{                                                                               
+    background: #ee6666;                                                        
+    display: block;                                                             
+    clear: both;                                                                
+    margin-top: 2px;                                                            
+}  
 \end{lstlisting}
+
+You can note that the \texttt{left} and \texttt{top} are 0, which would imply that the drop-down menus are always positioned in the top left corner. This is further fixed in JavaScript by the code
+
+\begin{lstlisting}
+if ($(document).width() > 480) {                                    
+	var button_offset  = $(object).offset();                        
+	button_offset.top += $(object).height()+15;                     
+	$(menu).css('left', button_offset.left);                        
+	$(menu).css('top', button_offset.top);                          
+}
+\end{lstlisting}
+
+The comparator is there to ensure that smaller screen resolutions works well, where media-queries makes the CSS of the drop-down menu for small screens equal to:
+
+\begin{lstlisting}
+nav .dropdown                                                               
+{                                                                           
+    display: none;                                                          
+    position: relative;                                                     
+}                                                                           
+                                                                                
+nav .dropdown.show                                                          
+{                                                                           
+    display: block;                                                         
+}
+\end{lstlisting}
+
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.3]{dropdown_both.png}
+    \caption{Side-by-side drop-down menu for larger and smaller screens}
+    \label{fig:dropdown}
+  \end{center}
+\end{figure}
+
+The result of this can be seen in figure \ref{fig:dropdown}.
+
+To ensure the modularity of the dropdown code, a JavaScript function to register an object as a drop-down menu was made. This function can be seen in it's entirety below:
+
+\begin{lstlisting}
+function register_dropdown(shortid)                                             
+{                                                                               
+    var object = "#nav_" + shortid;                                             
+    var toggle_menu =                                                           
+        function() {                                                            
+            var menu = "#dropdown_" + shortid;                                  
+                                                                                
+            if($(menu).hasClass('show'))                                        
+            {                                                                   
+                $(menu).removeClass('show');                                    
+                $(menu).fadeOut();                                              
+                return;                                                         
+            }                                                                   
+                                                                                
+            if ($(document).width() > 480) {                                    
+                var button_offset  = $(object).offset();                        
+                button_offset.top += $(object).height()+15;                     
+                $(menu).css('left', button_offset.left);                        
+                $(menu).css('top', button_offset.top);                          
+            }                                                                   
+                                                                                
+            close_dropdowns();                                                  
+            $(menu).addClass('show');                                           
+            $(menu).fadeIn();                                                   
+                                                                                
+            setTimeout(function() { $(document).click(close_dropdowns); }, 15); 
+        };                                                                      
+                                                                                
+    unregister_link(object);                                                    
+    $(object).append(" \/");                                                     
+    $(object).addClass("dropdown_head");                                        
+    $(object).click(toggle_menu);                                               
+}   
+\end{lstlisting}
+
+The most interesting part of this code is probably \texttt{\$(document).click(close\_dropdowns);} which registers the function close\_dropdowns to a click anywhere on the page. This makes the menu close whenever you press something that isn't a link.
+
+The close\_dropdowns function is defined as
+
+\begin{lstlisting}
+function close_dropdowns()                                                      
+{                                                                               
+    $('.dropdown.show').each(                                                   
+        function() {                                                            
+            $(this).fadeOut(400, function() {                                   
+                $(this).removeClass('show');                                    
+                $(this).css('left', '0px');                                     
+                $(this).css('top', '0px');                                      
+        });                                                                     
+    });                                                                         
+                                                                                
+    $(document).unbind('click');                                                
+} 
+\end{lstlisting}
+
+which pretty much resets the drop-down menu to it's defaults.
+
+\subsection{Comments}
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.3]{kommentar_all.png}
+    \caption{Editing, adding and deleting comments}
+    \label{fig:comments}
+  \end{center}
+\end{figure}
+
+The ability to make volatile comments is fulfilled by creating the comment-area with an input form. This input form is hijacked so that it doesn't send a \textit{POST/GET}-request on submit but rather creates a new DOM-object at the top of the comment area.
+
+By inserting the code below into the function that takes care of new comments, the site ensured that all the fields was filled before the submit-action did anything.
+
+\begin{lstlisting}                                                                         
+            if (!name || !email || !comment) {
+                e.preventDefault();
+                return;                                              
+            }
+\end{lstlisting}
+
+To delete a posted comment, it is as simple as binding the object-click to removing the comment. The \texttt{register\_delete\_comment} is fully written below:
+
+\begin{lstlisting}
+function register_delete_comment (button_class) {
+    $(button_class).click(function (e) {
+        var comment = $(this).closest('.comment');
+        comment.remove();
+        e.preventDefault();
+    });
+}    
+\end{lstlisting}
+
+To edit a comment, the value of the comment content is converted into a editable text area which is returned to a normal textbox when finished editing and submitting the form. This form is also hijacked to prevent unnecessary.
+                
+\subsection{Contact Us and About Us}
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[scale=0.3]{contact_all.png}
+    \caption{The contact }
+    \label{fig:contact}
+  \end{center}
+\end{figure}
+
+Simple contact us and about us was added to fulfill the requirements. These were simply modified versions of the front-page with different content. See figure \ref{fig:contact}.
+
+\section{Discussion}
+
+The addition of JavaScript felt quite unnecessary for this site. I would've preferred to use CSS to make the drop-down menu and to do the server side scripting before the JavaScript development is commenced. There are plenty of improvements that can be done to my version of the site, for example to structure everything more according the MVC. That was scrapped because of two reasons:
+
+\begin{enumerate}
+\item Adding more JavaScript libraries makes the site less stable
+\item It was uncertain how the libraries would work together with the ambition of keeping the site non-dependent on JavaScript and CSS
+\end{enumerate}
 
 \end{document}
