@@ -1,0 +1,3 @@
+[submodule "src/flight"]
+	path = src/flight
+	url = https://github.com/mikecao/flight
