@@ -1,12 +1,14 @@
+<?php
+    require_once(DIRNAME(__FILE__) . '/../helpers/main.php');
+?>
+
 <!doctype html>
 <html>
 <head>
-    <link href="css/main.css" rel="stylesheet" type="text/css" />
-    <link href="fonts/fontsheet.css" rel="stylesheet" type="text/css" />
-    <meta charset="utf-8" />
     <title>Tasty Recipes</title>
-    <script src="js/jquery.js"></script>
-    <script src="js/main.js"></script>
+    <?php
+        generate_head();
+    ?>
 </head>
 
 <body>
@@ -15,54 +17,42 @@
             <h1>Tasty Recipes</h1>
         </header>
         <nav>
-            <a href="index.html">Main</a>
-            <a href="calendar.html">Calendar</a>
-            <a href="recipes.html" id="nav_recipe">Recipes</a>
-            <div id="dropdown_recipe" class="dropdown">
-                <a href="pancakes.html" class="current">
-                    Pancakes
-                </a>
-                <a href="meatballs.html">
-                    Meatballs!
-                </a>
-            </div>
-            <a href="contact.html" id="nav_contact">Contact</a>
-            <div id="dropdown_contact" class="dropdown">
-                <a href="contact_us.html">Contact us</a>
-                <a href="about_us.html">About us</a>
-            </div>
+            <?php
+                generate_menu();
+            ?>
         </nav>
 
         <section>
-            <h2>Pancakes</h2>
+            <h2>Meatballs!</h2>
 
-            <img class="food-image" src="img/pancake320.jpg" alt="Picture of pancake" />
+            <img class="food-image" src="/img/meatballs320.jpg" alt="Picture of Meatballs!" />
 
             <div class="ingredients">
                 <h3>Ingredients</h3>
                 <ul>
-                    <li>120 grams all-purpose flour</li>
-                    <li>1½ teaspoon baking powder</li>
-                    <li>1 cup (250 ml) milk (substitute buttermilk or 1:1 mix of milk and buttermilk)</li>
-                    <li>1 egg, separated</li>
-                    <li>1 Tbs white sugar</li>
-                    <li>1 pinch salt</li>
+                    <li>250 g ground beef</li>
+                    <li>250 g ground pork</li>
+                    <li>1 egg</li>
+                    <li>50 mL dried bread crumbs</li>
+                    <li>200 - 300 mL milk or cream</li>
+                    <li>1 small onion</li>
+                    <li>salt, pepper</li>
+                    <li>butter for frying</li>
                 </ul>
             </div>
 
             <div class="procedure">
-                <h3>How to make pancake</h3>
+                <h3>How to make Meatballs!</h3>
 
                 <ol>
-                    <li>In large bowl, mix dry ingredients together until well-blended.</li>
-                    <li>Add milk and mix well until smooth.</li>
-                    <li>Separate eggs, placing the whites in a medium bowl and the yolks in the batter. Mix well.</li>
-                    <li>Beat whites until stiff and then fold into batter gently (skip this step for heavier pancakes or if 1 cup buttermilk is substituted for milk).</li>
-                    <li>Pour ladles of the mixture into a non-stick pan, one at a time.</li>
-                    <li>Cook until the edges are dry and bubbles appear on surface. Turn; cook until golden. Yields 12 to 14 pancakes.</li>
+                    <li>Combine the liquid ingredients and the bread crumbs in a bowl and let it sit for 7-8 minutes.</li>
+                    <li>Finely chop or grate the onion.</li>
+                    <li>Combine the ground beef, ground pork, egg, chopped onion, salt and pepper in the bowl.</li>
+                    <li>Make round Meatballs!, approximately 2-3 centimeters in diameter.</li>
+                    <li>Pan fry the Meatballs! on medium heat in a frying pan with butter for approximately 3-5 minutes. Fry them on all sides until they are brown and not pink in the middle. Shaking the pan occasionally will help the Meatballs! cook evenly.</li>
                 </ol>
 
-                Serve with butter, maple syrup, fruit, chocolate spread, melted chocolate, jam or cheese.
+                Serve the Meatballs! with mashed potatoes with a veal based brown sauce made with cream and lingonberry preserve or cranberry preserve.
             </div>
 
             <div class="nutrition">
@@ -92,15 +82,15 @@
                 <h3>Serving details</h3>
 
                 <div class="servings-row">
-                    <b class="key">Servings:</b> <i class="value">3</i>
+                    <b class="key">Servings:</b> <i class="value">4</i>
                 </div>
                 <div class="servings-row">
-                    <b class="key">Time consumption:</b> <i class="value">15 minutes</i>
+                    <b class="key">Time consumption:</b> <i class="value">30 minutes</i>
                 </div>
             </div>
             
             <p class="reference">
-                Recipe is borrowed from <a href="https://en.wikibooks.org/wiki/Cookbook:Pancake">Pancake on Wikibooks</a>.
+                Recipe is borrowed from <a href="https://en.wikibooks.org/w/index.php?title=Cookbook:Swedish_Meatballs&amp;oldid=2691161">Swedish Meatballs on Wikibooks</a>.
             </p>
             <div id="comment-box">
                <div class="new-comment">

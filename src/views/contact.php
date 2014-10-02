@@ -1,3 +1,7 @@
+<?php 
+    require_once(dirname(__FILE__) . "/helpers/main.php");
+?>
+
 <!doctype html>
 <html>
 <head>
@@ -13,18 +17,17 @@
             <h1>Tasty Recipes</h1>
         </header>
         <nav>
-            <a href="index.html">Main</a>
-            <a href="calendar.html">Calendar</a>
-            <a href="recipes.html" id="nav_recipe">Recipes</a>
-            <a href="contact.html" id="nav_contact" class="current">Contact</a>
+            <?php
+                generate_menu();
+            ?>
         </nav>
 
         <section>
             <h2>Contact</h2>
             
             <ul>
-                <li><a href="contact-us.html">Contact Us</a></li>
-                <li><a href="about.html">About Us</a></li>
+                <li><a href="/company/contact">Contact Us</a></li>
+                <li><a href="/company/about">About Us</a></li>
             </ul>
         </section>
         <footer>Developed by Emil Tullstedt for ID1354</footer>

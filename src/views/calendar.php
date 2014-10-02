@@ -1,16 +1,14 @@
 <?php
-    require_once(DIRNAME(__FILE__) . "/helpers/menu.php");
+    require_once(DIRNAME(__FILE__) . "/helpers/main.php");
 ?>
 
 <!doctype html>
 <html>
 <head>
-    <link href="css/main.css" rel="stylesheet" type="text/css" />
-    <link href="fonts/fontsheet.css" rel="stylesheet" type="text/css" />
-    <meta charset="utf-8" />
     <title>Tasty Recipes</title>
-    <script src="js/jquery.js"></script>
-    <script src="js/main.js"></script>
+    <?php
+        generate_head();
+    ?>
 </head>
 
 <body>

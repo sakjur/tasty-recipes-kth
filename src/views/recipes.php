@@ -1,10 +1,14 @@
+<?php 
+    require_once(dirname(__FILE__) . "/helpers/main.php");
+?>
+
 <!doctype html>
 <html>
 <head>
-    <link href="css/main.css" rel="stylesheet" type="text/css" />
-    <link href="fonts/fontsheet.css" rel="stylesheet" type="text/css" />
-    <meta charset="utf-8" />
     <title>Tasty Recipes</title>
+    <?php
+        generate_head();
+    ?>
 </head>
 
 <body>
@@ -13,18 +17,17 @@
             <h1>Tasty Recipes</h1>
         </header>
         <nav>
-            <a href="index.html">Main</a>
-            <a href="calendar.html">Calendar</a>
-            <a href="recipes.html" id="nav_recipe" class="current">Recipes</a>
-            <a href="contact.html" id="nav_contact">Contact</a>
+            <?php
+                generate_menu();
+            ?>
         </nav>
 
         <section>
             <h2>Recipe Index</h2>
 
             <ul>
-                <li><a href="meatballs.html">Meatballs!</a></li>
-                <li><a href="pancakes.html">Pancakes</a></li>
+                <li><a href="/recipes/meatballs">Meatballs!</a></li>
+                <li><a href="/recipes/pancakes">Pancakes</a></li>
             </ul>
         </section>
         <footer>Developed by Emil Tullstedt for ID1354</footer>

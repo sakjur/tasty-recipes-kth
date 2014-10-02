@@ -1,41 +1,88 @@
 <?php
 
+class NavLink {
+    private $url = Null;
+    private $name = Null;
+    private $dropdown_id = Null;
+    private $dropdown = array();
+
+    function __construct($url, $name, $dropdown_id = Null, $dropdown = False)
+    {
+        $this->url  = $url;
+        $this->name = $name;
+        $this->dropdown = $dropdown;
+        $this->dropdown_id = $dropdown_id;
+    }
+
+    public function has_dropdown()
+    {
+        if ($this->dropdown_id)
+            return True;
+        return False;
+    }
+
+    public function get_url()
+    {
+        return $this->url;
+    }
+
+    public function get_name()
+    {
+        return $this->name;
+    }
+
+    public function get_dropdown()
+    {
+        return $this->dropdown;
+    }
+
+    public function get_dropdown_id()
+    {
+        return $this->dropdown_id;
+    }
+
+    public function make_link()
+    {
+        return make_link($this->url, $this->name, "nav_$this->dropdown_id");       
+    }
+
+}
+
 function generate_menu()
 {
     $recipes = array(
-        array("url" => "/recipes/meatballs", "name" => "Meatballs!"),
-        array("url" => "/recipes/pancakes", "name" => "Pancakes")
+        new NavLink("/recipes/meatballs", "Meatballs!"),
+        new NavLink("/recipes/pancakes", "Pancakes")
     );
 
     $contact = array(
-        array("url" => "/company/about", "name" => "About"),
-        array("url" => "/company/contact", "name" => "Contact")
+        new NavLink("/company/about", "About"),
+        new NavLink("/company/contact", "Contact")
     );
 
     $pages = array(
-        array("url" => "/", "name" => "Main"),
-        array("url" => "/calendar", "name" => "Calendar"),
-        array("url" => "/recipes", "name" => "Recipes",
-            "dropdown" => $recipes, "dropdown_id" => "recipe"),
-        array("url" => "/company", "name" => "About", 
-            "dropdown" => $contact, "dropdown_id" => "contact")
+        new NavLink("/", "Main"),
+        new NavLink("/calendar", "Calendar"),
+        new NavLink("/recipes", "Recipes", "recipe", $recipes),
+        new NavLink("/company", "About", "contact", $contact)
     );
 
     foreach ($pages as $each) {
-        if (!array_key_exists('dropdown', $each)) {
-            $link = make_link($each['url'], $each['name']);
-            echo($link); 
-        } else {
-            $link = make_link($each['url'], $each['name'], 
-                "nav_" . $each['dropdown_id']);
-            $link .= "<div id=\"dropdown_" . $each['dropdown_id'];
+        if ($each->has_dropdown()) {
+            $link = $each->make_link();
+            $link .= "<div id=\"dropdown_" . $each->get_dropdown_id();
             $link .= "\" class=\"dropdown\">";
-            foreach ($each['dropdown'] as $menu_item)
+
+            $dropdown_menu = $each->get_dropdown();
+
+            foreach ($dropdown_menu as $menu_item)
             {
-                $link .= make_link($menu_item['url'], $menu_item['name']);
+                $link .= $menu_item->make_link();
             }
             $link .= "</div>";
             echo($link);
+        } else { // No dropdown
+            echo $each->make_link();
         }
     };
 };
@@ -47,7 +94,7 @@ function make_link($href, $name, $id = False, $classes = False)
         $link .= " id=\"$id\"";
     if ($classes)
         $link .= " class=\"$classes\"";
-    $link .= ">$name</a>";
+    $link .= ">$name</a> ";
     return $link;
 }
 
