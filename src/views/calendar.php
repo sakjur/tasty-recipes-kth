@@ -1,3 +1,7 @@
+<?php
+    require_once(DIRNAME(__FILE__) . "/helpers/menu.php");
+?>
+
 <!doctype html>
 <html>
 <head>
@@ -15,22 +19,9 @@
             <h1>Tasty Recipes</h1>
         </header>
         <nav>
-            <a href="index.html">Main</a>
-            <a href="calendar.html" class="current">Calendar</a>
-            <a href="recipes.html" id="nav_recipe">Recipes</a>
-            <div id="dropdown_recipe" class="dropdown">
-                <a href="pancakes.html">
-                    Pancakes
-                </a>
-                <a href="meatballs.html">
-                    Meatballs!
-                </a>
-            </div>
-            <a href="contact.html" id="nav_contact">Contact</a>
-            <div id="dropdown_contact" class="dropdown">
-                <a href="contact_us.html">Contact us</a>
-                <a href="about_us.html">About us</a>
-            </div>
+            <?php
+                generate_menu();
+            ?>
         </nav>
 
         <section>
