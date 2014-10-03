@@ -82,7 +82,7 @@
                 <div class="day">
                 15 Oktober
                 
-                <a href="pancakes.html"><img src="img/pancake128.jpg" alt="pancake" /></a>
+                <a href="/recipes/pancakes"><img src="img/pancake128.jpg" alt="pancake" /></a>
                 </div>
                 <div class="day">
                 16 Oktober
@@ -126,7 +126,7 @@
                 <div class="day">
                 27 Oktober
 
-                <a href="meatballs.html"><img src="img/meatballs128.jpg" alt="meatballs!" /></a>
+                <a href="/recipes/meatballs"><img src="img/meatballs128.jpg" alt="meatballs!" /></a>
                 </div>
                 <div class="day">
                 28 Oktober

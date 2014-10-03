@@ -43,7 +43,11 @@ class NavLink {
 
     public function make_link()
     {
-        return make_link($this->url, $this->name, "nav_$this->dropdown_id");       
+        $link = "<a href=\"$this->url\"";
+        if ($this->has_dropdown())
+            $link .= " id=\"nav_$this->dropdown_id\"";
+        $link .= ">$this->name</a> ";
+        return $link;
     }
 
 }
@@ -86,17 +90,6 @@ function generate_menu()
         }
     };
 };
-
-function make_link($href, $name, $id = False, $classes = False)
-{
-    $link = "<a href=\"$href\"";
-    if ($id)
-        $link .= " id=\"$id\"";
-    if ($classes)
-        $link .= " class=\"$classes\"";
-    $link .= ">$name</a> ";
-    return $link;
-}
 
 ?>
 
