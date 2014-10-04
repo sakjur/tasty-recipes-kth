@@ -91,23 +91,8 @@
             <p class="reference">
                 Recipe is borrowed from <a href="https://en.wikibooks.org/wiki/Cookbook:Pancake">Pancake on Wikibooks</a>.
             </p>
-            <div id="comment-box">
-               <div class="new-comment">
-                    <form id="add_comment">
-                        <label for="nick">Nickname</label><br />
-                        <input type="text" name="nick" class="nick" placeholder="Nickname" /></input>
-                        <br/>
-                        <label for="email">E-mail</label><br />
-                        <input type="email" name="email" class="email" placeholder="E-mail" /></input>
-                        <br />
-                        <label for="comment">Comment:</label><br />
-                        <textarea name="comment" class="new-comment"> </textarea>
-                        <br />
-                        <button type="submit">Submit</button>
-                    </form>
-                </div>
-            </div>
-        </section>
+            <?php generate_comments(); ?>
+       </section>
 
         <footer>Developed by Emil Tullstedt for ID1354</footer>
     </div>
