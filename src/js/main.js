@@ -105,13 +105,10 @@ function register_comment_area (obj) {
     $(add_obj).submit(
         function(e) {
             var name = $(add_obj + " .nick").val();
-            var email = $(add_obj + " .email").val();
             var comment = $(add_obj + " .new-comment").val();
-            $(add_obj + " .nick").val("");
-            $(add_obj + " .email").val("");
             $(add_obj + " .new-comment").val("");
 
-            if (!name || !email || !comment) {
+            if (!name || !comment) {
                 var emsg = "Cannot submit"; 
                 console.log(emsg);
                 e.preventDefault();
@@ -120,12 +117,9 @@ function register_comment_area (obj) {
 
             var nc = '<div class="comment">';
             nc += '<div class="comment-meta">';
-            nc += '<img src="http://www.gravatar.com/avatar/' +
-                email + '?d=retro&amp;s=42"';
-            nc += ' alt="" />';
             nc += '<b class="author">' + name + '</b>';
-            nc += '<a class="edit" href="#">edit</a> ';
-            nc += '<a class="delete" href="#">delete</a>';
+            //nc += '<a class="edit" href="#">edit</a> ';
+            //nc += '<a class="delete" href="#">delete</a>';
             nc += '<i class="date">' + get_current_time() + '</i>';
             nc += '</div>';
             nc += '<div class="comment-text">';

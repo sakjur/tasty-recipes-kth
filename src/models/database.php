@@ -15,6 +15,9 @@ class Database {
             user_id = (SELECT id FROM users WHERE users.username = $1) AND
             session = $2');
         pg_prepare($this->conn, "add_user", 'SELECT add_user($1, $2, $3);');        
+        pg_prepare($this->conn, "logout", 'DELETE FROM sessions WHERE
+            user_id = (SELECT id FROM users WHERE users.username = $1) AND
+            session = $2');
     }
 
     function __destruct () {
@@ -36,6 +39,12 @@ class Database {
     public function add_user($username, $password, $email = Null) {
         pg_execute($this->conn, "add_user", 
             array($username, $password, $email));
+        return True;
+    }
+
+    public function logout($username, $session_key) {
+        pg_execute($this->conn, "logout", 
+            array($username, $session_key));
         return True;
     }
 

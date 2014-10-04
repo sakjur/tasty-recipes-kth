@@ -14,6 +14,17 @@ CREATE TABLE users
     password    text
 );
 
+CREATE TABLE sessions
+(
+    id          serial PRIMARY KEY,
+    user_id     integer NOT NULL,
+    session     text NOT NULL,
+    datetime    timestamp with time zone DEFAULT now(),
+    active      boolean DEFAULT TRUE,
+    CONSTRAINT sessions_fk1 FOREIGN KEY (user_id)
+        REFERENCES users (id)
+);
+
 CREATE TABLE recipes
 (
     id          serial PRIMARY KEY,
@@ -42,13 +53,19 @@ CREATE VIEW comments_by_recipes AS
     WHERE comments.recipe_id = recipes.id;
 
 /* Copied from http://www.hagander.net/talks/Secure%20password%20storage.pdf */
-CREATE OR REPLACE FUNCTION login(INOUT _userid text, _pwd text)
+CREATE OR REPLACE FUNCTION login(_username text, _pwd text, 
+    OUT _session_key text)
     RETURNS text 
 AS $$
+DECLARE
+    _userid integer;
 BEGIN
-    SELECT username INTO _userid FROM users
-        WHERE users.username = _userid
-        AND password = crypt(_pwd, users.password);
+    _session_key := (SELECT crypt(_username || current_timestamp,
+        gen_salt('bf'))  FROM users
+            WHERE users.username = _username
+            AND password = crypt(_pwd, users.password));
+    _userid := (SELECT id FROM users WHERE username = _username);
+    INSERT INTO sessions (user_id, session) VALUES (_userid, _session_key);
 END;
 $$ LANGUAGE plpgsql;
 

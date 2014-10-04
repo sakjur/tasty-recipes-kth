@@ -73,4 +73,23 @@
             return $message;
         }
     }
+
+    function user_logout()
+    {
+        if (isset($_COOKIE['username'], $_COOKIE['session']))
+            $username = $_COOKIE['username'];
+            $session_key = $_COOKIE['session'];
+
+            $dbconn = new Database();    
+            
+            try {
+                $dbconn->logout($username, $session_key);
+                $message = "Logged out successfully";
+            } catch (Exception $e) {
+                $message =  "Failed to logout\n";
+            }
+
+            unset($dbconn);
+            return $message;
+    }
 ?>

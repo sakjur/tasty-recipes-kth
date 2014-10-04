@@ -31,6 +31,11 @@ Flight::route('/login', function(){
     Flight::render('login.php');
 });
 
+Flight::route('/logout', function(){
+    user_logout();
+    Flight::redirect('/');
+});
+
 Flight::route('/signup', function(){
     Flight::set('message', user_signup());
     Flight::render('signup.php');

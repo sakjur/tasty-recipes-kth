@@ -97,6 +97,7 @@
                <div class="new-comment">
                     <form id="add_comment" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
                         <p>Write a new comment as <b><?php echo $_COOKIE['username']; ?></b></p>
+                        <input type="hidden" name="nick" class="nick" value="<?php echo $_COOKIE['username']; ?>"></input>
                         <label for="comment">Comment:</label><br />
                         <textarea name="comment" class="new-comment"> </textarea>
                         <br />
