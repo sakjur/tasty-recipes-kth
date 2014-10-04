@@ -19,6 +19,7 @@ Flight::route('/recipes', function(){
 });
 
 Flight::route('/recipes/@recipe', function($recipe) {
+    Flight::set('recipe_name', $recipe);
     Flight::render('recipes/' . $recipe . '.php');
 });
 
