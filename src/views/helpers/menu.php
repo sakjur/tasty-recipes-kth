@@ -68,8 +68,13 @@ function generate_menu()
         new NavLink("/", "Main"),
         new NavLink("/calendar", "Calendar"),
         new NavLink("/recipes", "Recipes", "recipe", $recipes),
-        new NavLink("/company", "About", "contact", $contact)
+        new NavLink("/company", "About", "contact", $contact),
     );
+         
+    if(Flight::get('has_session') == False)
+        array_push($pages, new NavLink("/login", "Login"));
+    else
+        array_push($pages, new NavLink("/logout", "Log out"));
 
     foreach ($pages as $each) {
         if ($each->has_dropdown()) {

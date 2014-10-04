@@ -93,20 +93,17 @@
                 Recipe is borrowed from <a href="https://en.wikibooks.org/w/index.php?title=Cookbook:Swedish_Meatballs&amp;oldid=2691161">Swedish Meatballs on Wikibooks</a>.
             </p>
             <div id="comment-box">
+            <?php if (Flight::has('has_session') && Flight::get('has_session')) { ?>
                <div class="new-comment">
-                    <form id="add_comment">
-                        <label for="nick">Nickname</label><br />
-                        <input type="text" name="nick" class="nick" placeholder="Nickname" /></input>
-                        <br/>
-                        <label for="email">E-mail</label><br />
-                        <input type="email" name="email" class="email" placeholder="E-mail" /></input>
-                        <br />
+                    <form id="add_comment" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                        <p>Write a new comment as <b><?php echo $_COOKIE['username']; ?></b></p>
                         <label for="comment">Comment:</label><br />
                         <textarea name="comment" class="new-comment"> </textarea>
                         <br />
                         <button type="submit">Submit</button>
                     </form>
                 </div>
+             <?php } ?>
             </div>
         </section>
 
