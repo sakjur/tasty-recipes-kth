@@ -18,6 +18,12 @@ class Database {
         pg_prepare($this->conn, "logout", 'DELETE FROM sessions WHERE
             user_id = (SELECT id FROM users WHERE users.username = $1) AND
             session = $2');
+        pg_prepare($this->conn, "get_comments_by_recipe", 'SELECT * FROM
+            comments_by_recipes WHERE slug = $1');
+        pg_prepare($this->conn, "post_comment", 'INSERT INTO comments 
+            (recipe_id, user_id, comment) VALUES ((SELECT id FROM recipes WHERE
+            recipes.slug = $1), (SELECT id FROM users WHERE users.username 
+            = $2), $3)');
     }
 
     function __destruct () {
@@ -48,6 +54,17 @@ class Database {
         return True;
     }
 
+    public function get_comments_by_recipe($recipe) {
+        $rv = pg_execute($this->conn, "get_comments_by_recipe", array($recipe));
+        $rv = pg_fetch_all($rv);
+        return $rv;
+    }
+
+    public function post_comment($recipe, $user, $comment) {
+        pg_execute($this->conn, "post_comment", 
+            array ($recipe, $user, $comment));
+    }
+
 }
-     
+
 ?>

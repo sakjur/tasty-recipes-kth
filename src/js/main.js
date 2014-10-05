@@ -118,13 +118,14 @@ function register_comment_area (obj) {
             var nc = '<div class="comment">';
             nc += '<div class="comment-meta">';
             nc += '<b class="author">' + name + '</b>';
-            //nc += '<a class="edit" href="#">edit</a> ';
-            //nc += '<a class="delete" href="#">delete</a>';
             nc += '<i class="date">' + get_current_time() + '</i>';
             nc += '</div>';
             nc += '<div class="comment-text">';
             nc += comment;
             nc += '</div>';
+
+            var recipe_name = $(add_obj + " .recipe").val();
+            $.post('/new_comment', { r: recipe_name, c: comment});
 
             $(obj_box).prepend(nc);
             register_edit_comment_button('edit');

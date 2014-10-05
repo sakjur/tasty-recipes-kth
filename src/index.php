@@ -3,6 +3,7 @@
 require_once("flight/flight/Flight.php");
 require_once(DIRNAME(__FILE__) . "/models/database.php");
 require_once(DIRNAME(__FILE__) . "/models/sessions.php");
+require_once(DIRNAME(__FILE__) . "/models/comments.php");
 
 Flight::set('has_session', has_session());
 
@@ -20,7 +21,13 @@ Flight::route('/recipes', function(){
 
 Flight::route('/recipes/@recipe', function($recipe) {
     Flight::set('recipe_name', $recipe);
+    Flight::set('comments', get_comments($recipe));
     Flight::render('recipes/' . $recipe . '.php');
+});
+
+Flight::route('/new_comment', function()  {
+    post_comment();
+    echo "Lalalala...";
 });
 
 Flight::route('/company', function(){
