@@ -37,7 +37,7 @@ CREATE TABLE comments
     user_id         integer,
     recipe_id       integer NOT NULL,
     comment         text NOT NULL,
-    time_created    timestamp with time zone,
+    time_created    timestamp with time zone DEFAULT now(),
     CONSTRAINT comment_fk1 FOREIGN KEY (user_id)
         REFERENCES users (id),
     CONSTRAINT comment_fk2 FOREIGN KEY (recipe_id)
@@ -48,11 +48,15 @@ INSERT INTO recipes(slug) VALUES ('meatballs');
 INSERT INTO recipes(slug) VALUES ('pancakes');
 
 CREATE VIEW comments_by_recipes AS
-    SELECT username, email, comment, time_created
+    SELECT comments.id, username, email, comment, time_created, recipes.slug
     FROM users, comments, recipes
-    WHERE comments.recipe_id = recipes.id;
+    WHERE comments.recipe_id = recipes.id AND users.id = comments.user_id;
 
-/* Copied from http://www.hagander.net/talks/Secure%20password%20storage.pdf */
+/*
+ * Copied from http://www.hagander.net/talks/Secure%20password%20storage.pdf 
+ * I guess it was copied at one point. Now it's quite different. But still
+ * giving credit where credit is due.
+ */
 CREATE OR REPLACE FUNCTION login(_username text, _pwd text, 
     OUT _session_key text)
     RETURNS text 
