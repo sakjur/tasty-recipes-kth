@@ -19,11 +19,15 @@ class Database {
             user_id = (SELECT id FROM users WHERE users.username = $1) AND
             session = $2');
         pg_prepare($this->conn, "get_comments_by_recipe", 'SELECT * FROM
-            comments_by_recipes WHERE slug = $1');
+            comments_by_recipes WHERE slug = $1 ORDER BY time_created ASC');
         pg_prepare($this->conn, "post_comment", 'INSERT INTO comments 
             (recipe_id, user_id, comment) VALUES ((SELECT id FROM recipes WHERE
             recipes.slug = $1), (SELECT id FROM users WHERE users.username 
             = $2), $3)');
+        pg_prepare($this->conn, "get_comment_by_id", 'SELECT * FROM
+            comments_by_recipes WHERE id = $1');
+        pg_prepare($this->conn, "set_comment_by_id", 'UPDATE comments
+            SET comment = $2 WHERE id = $1');
     }
 
     function __destruct () {
@@ -35,7 +39,18 @@ class Database {
         $rv = pg_fetch_row($rv);
         return $rv[0];
     }
+
+    public function get_comment_by_id($id) {
+        $rv = pg_execute($this->conn, "get_comment_by_id", array($id));
+        $rv = pg_fetch_row($rv);
+        return $rv;
+    }
     
+    public function set_comment_by_id($id, $comment) {
+        pg_execute($this->conn, "set_comment_by_id", array($id, $comment));
+        return True;
+    }
+
     public function valid_session($username, $session_key) {
         $rv = pg_execute($this->conn, "valid", array($username, $session_key));
         $rv = pg_fetch_row($rv);

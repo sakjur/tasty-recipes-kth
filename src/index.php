@@ -25,6 +25,16 @@ Flight::route('/recipes/@recipe', function($recipe) {
     Flight::render('recipes/' . $recipe . '.php');
 });
 
+Flight::route('/edit/@comment', function($comment) {
+    Flight::set('comment', get_comment($comment)); 
+    Flight::render('edit.php');
+});
+
+Flight::route('/submit_edit', function() {
+    update_comment();
+    Flight::redirect('/');
+});
+
 Flight::route('/new_comment', function()  {
     post_comment();
     echo "Lalalala...";

@@ -19,10 +19,37 @@
 
             $comment = $_POST['c'];
             $recipe = $_POST['r'];
-            
-            $user = $_COOKIE['username']; // Such secure
+            $user = $_COOKIE['username']; 
+            if (!$dbconn->valid_session($user, $_COOKIE['session']))
+                                return False;
             
             $dbconn->post_comment($recipe, $user, $comment);
         }
+    }
+
+    function get_comment($id)
+    {
+        $dbconn = new Database();    
+            
+        $rv = $dbconn->get_comment_by_id($id);
+
+        unset($dbconn);
+        return $rv;
+    }
+
+    function update_comment()
+    {
+         if (isset($_POST['cid'], $_POST['comment'])) {
+            $dbconn = new Database();
+
+            $id = $_POST['cid'];
+            $comment = $_POST['comment'];
+            $user = $_COOKIE['username']; 
+            if (!$dbconn->valid_session($user, $_COOKIE['session']))
+                return False;
+            
+            $dbconn->set_comment_by_id($id, $comment);
+        }
+           
     }
 ?>
