@@ -21,9 +21,10 @@
             {
                 echo '<div class="comment"><div class="comment-meta">';
                 echo "<b class=\"author\">" . $c['username'] . "</b>";
-                if ($c['username'] == $_COOKIE['username'])
-                    echo '<a class="edit" href="/edit/' . $c['id'] .
-                        '">edit</a>';
+                if(isset($_COOKIE['username']))
+                    if ($c['username'] == $_COOKIE['username'])
+                        echo '<a class="edit" href="/edit/' . $c['id'] .
+                            '">edit</a>';
                 echo "<i class=\"date\">" . $c['time_created'] . "</i>";
                 echo "</div>";
                 echo "<div class=\"comment-text\"> " . $c['comment'] .

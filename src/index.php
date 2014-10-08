@@ -1,7 +1,6 @@
 <?php
 
 require_once("flight/flight/Flight.php");
-require_once(DIRNAME(__FILE__) . "/models/database.php");
 require_once(DIRNAME(__FILE__) . "/models/sessions.php");
 require_once(DIRNAME(__FILE__) . "/models/comments.php");
 

@@ -5,8 +5,6 @@
     function user_signup() {
        if (isset($_POST['username'], $_POST['password']))
        {
-            require_once(dirname(__FILE__) . "/../models/database.php");
-
             $username = $_POST['username'];
             $password = $_POST['password'];
      
@@ -90,6 +88,10 @@
             }
 
             unset($dbconn);
+            unset($_COOKIE['username']);
+            unset($_COOKIE['session']);
+            setcookie('username', null, -1, '/');
+            setcookie('session', null, -1, '/');
             return $message;
     }
 ?>
