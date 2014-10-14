@@ -39,6 +39,11 @@ Flight::route('/new_comment', function()  {
     echo "Lalalala...";
 });
 
+Flight::route('/recipes/@recipe/comments.json', function($recipe) {
+	$json_comments = json_encode(get_comments($recipe));
+	echo $json_comments;
+});
+
 Flight::route('/company', function(){
     Flight::render('contact.php');
 });

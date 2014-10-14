@@ -5,9 +5,11 @@
     function user_signup() {
        if (isset($_POST['username'], $_POST['password']))
        {
-            $username = $_POST['username'];
+            $username_unsafe = $_POST['username'];
             $password = $_POST['password'];
      
+			$username = htmlentities($username_unsafe, ENT_QUOTES);
+
             if (!$_POST['email'] == '')
             {
                 $email = $_POST['email'];
@@ -34,9 +36,11 @@
         if (isset($_COOKIE["session"], $_COOKIE["username"]))
         {
            $session = $_COOKIE["session"];
-           $username = $_COOKIE["username"];
+           $username_unsafe = $_COOKIE["username"];
 
-           $db_conn = new Database();
+		   $username = htmlentities($username_unsafe, ENT_QUOTES);
+		   
+		   $db_conn = new Database();
            try 
            {
                 if ($db_conn->valid_session($username, $session))
@@ -53,9 +57,10 @@
     {
         if (isset($_POST['username'], $_POST['password']))
         {
-            $username = $_POST['username'];
+            $username_unsafe = $_POST['username'];
             $password = $_POST['password'];
          
+			$username = htmlentities($username_unsafe, ENT_QUOTES);
             $db_conn = new Database();
 
             try 
@@ -75,10 +80,11 @@
     function user_logout()
     {
         if (isset($_COOKIE['username'], $_COOKIE['session']))
-            $username = $_COOKIE['username'];
+            $username_unsafe = $_COOKIE['username'];
             $session_key = $_COOKIE['session'];
 
             $dbconn = new Database();    
+			$username = htmlentities($username_unsafe, ENT_QUOTES);
             
             try {
                 $dbconn->logout($username, $session_key);

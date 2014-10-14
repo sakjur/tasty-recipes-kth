@@ -101,10 +101,13 @@ function register_delete_comment (button_class) {
 function register_comment_area (obj) {
     var add_obj = '#add_' + obj;
     var obj_box = '#' + obj + '-box';
+	var name = $(add_obj + " .nick").val();
+	var recipe_name = $(add_obj + " .recipe").val();
+
+	get_comments_json(recipe_name, name, obj_box);
 
     $(add_obj).submit(
         function(e) {
-            var name = $(add_obj + " .nick").val();
             var comment = $(add_obj + " .new-comment").val();
             $(add_obj + " .new-comment").val("");
 
@@ -115,24 +118,46 @@ function register_comment_area (obj) {
                 return;
             }
 
-            var nc = '<div class="comment">';
-            nc += '<div class="comment-meta">';
-            nc += '<b class="author">' + name + '</b>';
-            nc += '<i class="date">' + get_current_time() + '</i>';
-            nc += '</div>';
-            nc += '<div class="comment-text">';
-            nc += comment;
-            nc += '</div>';
-
-            var recipe_name = $(add_obj + " .recipe").val();
-            $.post('/new_comment', { r: recipe_name, c: comment});
-
-            $(obj_box).prepend(nc);
-            register_edit_comment_button('edit');
-            register_delete_comment('delete');
+            $.post('/new_comment', { r: recipe_name, c: comment})
+				.done(function() {
+					get_comments_json(recipe_name, name, obj_box);
+				});
 
             e.preventDefault();
     });
+}
+
+function get_comments_json (recipe, name, obj_box) {
+	$.get("/recipes/" + recipe + "/comments.json",
+		function(msg) {
+			var comment_array = $.parseJSON(msg);
+
+			var nc = "";
+			console.log(comment_array);
+
+			$.each(
+				comment_array,
+				function (key, comment) {
+					console.log(comment);
+					nc += '<div class="comment">';
+					nc += '<div class="comment-meta">';
+					nc += '<b class="author">' + comment.username + '</b>';
+					if (name == comment.username) {
+						nc += "<a class=\"edit\""; 
+						nc += "href=\"/edit/" + comment.id + "\">edit</a>";
+					}
+					nc += '<i class="date">' + comment.time_created + '</i>';
+					nc += '</div>';
+					nc += '<div class="comment-text">';
+					nc += comment.comment;
+					nc += '</div>';
+				}
+			);
+
+            $(".comment").remove();
+            $(obj_box).prepend(nc);
+		}
+	);
 }
 
 $(document).ready(function() {

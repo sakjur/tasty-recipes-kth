@@ -17,9 +17,10 @@
         if (isset($_POST['c'], $_POST['r'])) {
             $dbconn = new Database();
 
-            $comment = $_POST['c'];
+            $comment = htmlentities($_POST['c'], ENT_QUOTES);
             $recipe = $_POST['r'];
             $user = $_COOKIE['username']; 
+
             if (!$dbconn->valid_session($user, $_COOKIE['session']))
                                 return False;
             
@@ -43,7 +44,7 @@
             $dbconn = new Database();
 
             $id = $_POST['cid'];
-            $comment = $_POST['comment'];
+            $comment = htmlentities($_POST['comment'], ENT_QUOTES);
             $user = $_COOKIE['username']; 
             if (!$dbconn->valid_session($user, $_COOKIE['session']))
                 return False;
