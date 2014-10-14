@@ -62,42 +62,6 @@ function register_dropdown(shortid)
     $(object).click(toggle_menu);
 }
 
-function register_edit_comment_button(button_class) {
-    $('.' + button_class).click(function (e){
-        var comment = $(this).closest('.comment');
-        comment = comment.children('.comment-text');
-        var current_content = comment.html();
-        comment.empty();
-
-        var ef = '<form class="editform">';
-        ef += '<textarea class="edittext"></textarea>';
-        ef += '<br />';
-        ef += '<button type="submit">Submit</button>';
-        ef += '</form>';
-
-        comment.append(ef);
-        $('.edittext').val(current_content);
-
-        $('.editform').submit(function (e) {
-            var content = $('.edittext').val();
-            content = content.replace('\n', '<br />');
-            var new_comment = $(this).closest('.comment-text');
-            new_comment.empty();
-            new_comment.append(content);
-            e.preventDefault();
-        });
-        e.preventDefault();
-    });
-}
-
-function register_delete_comment (button_class) {
-    $('.' + button_class).click(function (e) {
-        var comment = $(this).closest('.comment');
-        comment.remove();
-        e.preventDefault();
-    });
-}
-
 function register_comment_area (obj) {
     var add_obj = '#add_' + obj;
     var obj_box = '#' + obj + '-box';
@@ -109,6 +73,7 @@ function register_comment_area (obj) {
     $(add_obj).submit(
         function(e) {
             var comment = $(add_obj + " .new-comment").val();
+			var name = $(add_obj + " .nick").val();
             $(add_obj + " .new-comment").val("");
 
             if (!name || !comment) {
