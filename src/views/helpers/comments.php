@@ -5,7 +5,9 @@
         
         if (Flight::has('has_session') && Flight::get('has_session')) {
             $comment_box .= create_comment_form();
-        }
+		} else {
+			$comment_box .= login_redirection();
+		}
         $comment_box .= '</div>';
 
         echo $comment_box;
@@ -21,7 +23,7 @@
         $rv .= 'value="' . $_COOKIE['username'] .
             '"></input>';
         $rv .= '<input type="hidden" name="recipe" class="recipe"';
-        $rv .= 'value="' . Flight::get('recipe_name') .
+        $rv .= 'value="' . flight::get('recipe_name') .
             '"></input>';
         $rv .= 
                 '<label for="comment">Comment:</label><br />
@@ -32,5 +34,19 @@
         $rv .= "</div>";
         return $rv;
     }
+
+	function login_redirection() {
+        $rv = '<div class="new-comment">';
+        $rv .= '<form id="add_comment">';
+        $rv .= '<input type="hidden" name="nick" class="nick"';
+        $rv .= 'value="N/A"></input>';
+        $rv .= '<input type="hidden" name="recipe" class="recipe"';
+        $rv .= 'value="' . flight::get('recipe_name') .
+            '"></input>';
+		$rv .= "</form>";
+		$rv .= "<p><a href=\"/login\">Login</a> to comment.</p>";
+        $rv .= "</div>";
+        return $rv;
+	}
 
 ?>

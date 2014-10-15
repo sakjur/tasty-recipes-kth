@@ -8,11 +8,20 @@
             $username_unsafe = $_POST['username'];
             $password = $_POST['password'];
      
+			if (preg_match('/[^A-Za-z_\-0-9\ ]/', $username_unsafe))
+				return "You may only have alphanumerics and \" _-\" 
+					in your username.";
+
 			$username = htmlentities($username_unsafe, ENT_QUOTES);
 
             if (!$_POST['email'] == '')
             {
-                $email = $_POST['email'];
+                $email_unsafe = $_POST['email'];
+				if (preg_match('/.+@.+\..+/', $email_unsafe)) { 
+					$email = $email_unsafe;
+				} else {
+					return "Email must be blank or a valid email address";
+				}
             } else {
                 $email = Null;
             }
@@ -60,13 +69,18 @@
             $username_unsafe = $_POST['username'];
             $password = $_POST['password'];
          
+			if (preg_match('/[^A-Za-z_\-0-9\ ]/', $username_unsafe))
+				return "You may only have alphanumerics and \" _-\" 
+					in your username.";
+
 			$username = htmlentities($username_unsafe, ENT_QUOTES);
             $db_conn = new Database();
 
             try 
             {
-                setcookie("username", $username);
-                setcookie("session", $db_conn->login($username, $password));
+                setcookie("username", $username, null, '/', null, null, true);
+				setcookie("session", $db_conn->login($username, $password), 
+					null, '/', null, null, true);
                 $message = "Logged in successfully";
             } catch (Exception $e) {
                 $message =  "Failed to login\n";

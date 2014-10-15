@@ -1,0 +1,19 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Introduction}{3}
+\contentsline {section}{\numberline {2}Method}{3}
+\contentsline {subsection}{\numberline {2.1}Filesystem Security}{3}
+\contentsline {subsection}{\numberline {2.2}Input filtering}{3}
+\contentsline {subsection}{\numberline {2.3}Password Encryption}{4}
+\contentsline {subsection}{\numberline {2.4}XSS}{4}
+\contentsline {subsection}{\numberline {2.5}Impersonation}{4}
+\contentsline {subsection}{\numberline {2.6}TLS Encryption}{5}
+\contentsline {subsection}{\numberline {2.7}AJAX}{5}
+\contentsline {section}{\numberline {3}Result}{6}
+\contentsline {subsection}{\numberline {3.1}Filesystem Security}{6}
+\contentsline {subsection}{\numberline {3.2}Input filtering}{6}
+\contentsline {subsection}{\numberline {3.3}Password Encryption}{7}
+\contentsline {subsection}{\numberline {3.4}XSS}{7}
+\contentsline {subsection}{\numberline {3.5}Impersonation}{8}
+\contentsline {subsection}{\numberline {3.6}TLS Encryption}{8}
+\contentsline {subsection}{\numberline {3.7}AJAX}{8}
+\contentsline {section}{\numberline {4}Discussion}{10}

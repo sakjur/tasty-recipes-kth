@@ -1,0 +1,311 @@
+\documentclass[a4paper]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{lastpage}
+\usepackage{pgf}
+\usepackage{wrapfig}
+\usepackage{fancyvrb}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\pagestyle{fancy}
+\usepackage{libertine}
+\renewcommand*\familydefault{\sfdefault}  %% Only if the base font of the document is to be sans serif
+\usepackage[T1]{fontenc}
+\usepackage{courier}
+\usepackage{marginnote}
+\usepackage[parfill]{parskip}
+
+\graphicspath{ {./images/} }
+
+% Create header and footer
+\headheight 27pt
+\pagestyle{fancyplain}
+\lhead{\footnotesize{Internet Applications, ID1354}}
+\chead{}
+\rhead{\footnotesize{Assignment 4: Non-functional Improvements}}
+\lfoot{}
+\cfoot{\thepage\ (\pageref{LastPage})}
+\rfoot{}
+
+% Create title page
+\title{Assignment 4: Non-functional Improvements}
+\subtitle{Internet Applications, ID1354}
+\author{Emil Tullstedt [emiltu@kth.se]}
+\date{2014-10-05}
+
+\lstset{
+	basicstyle=\footnotesize\ttfamily, 
+	numbers=left,
+	breaklines=true,
+	frame=l,
+	keywordstyle=\bfseries\color{blue!40!black},
+    stringstyle=\color{red},
+    commentstyle=\color{green},
+    identifierstyle=\color{black},
+    showstringspaces=false
+}
+
+\begin{document}
+
+\maketitle
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+
+The final assignment of the ID1354 course is to enhance performance and security of the application by means of typical improvements necessary.
+
+\section{Method}
+
+\subsection{Filesystem Security}
+
+When attempting to thwart a hacker, one of the more crucial concepts is to limit the access of users used to run exploitable software. By limiting the accesses of the web server process, many otherwise crucial exploits can be severely limited. There are a few ways of limiting the web server:
+
+\begin{itemize}
+\item Running the server as a separate user and take the following precautions to avoid this user escalating
+\begin{enumerate}
+\item Limiting the web-server's accesses in the \texttt{httpd.conf}
+\item Avoid having unnecessary binaries with the \texttt{setuid}-bit set
+\item Set sensible permissions for the different files on the system (i.e. avoid having world-readable or world-readable files)\footnote{This is a super-extensive task}
+\end{enumerate}
+\item Run the server within a chroot without anything else than the server
+\item Run the server within a container without anything else than the server
+\item Run the server on a dedicated operating system, either virtual or physical
+\end{itemize}
+
+For the sake of this task, running the server as a separate user is appropriate. Most Linux distributions does this on installation -- Fedora runs the server with the user \texttt{Apache} which is created with the command 
+
+\texttt{/usr/sbin/useradd -c "Apache" -u 48 -s /sbin/nologin -r -d \%{contentdir} apache}
+
+Notable is how this user is limited with no shell access.
+
+\subsection{Input filtering}
+
+Server side input filtering can be seen as preventing SQL-injections and XSS (covered in section \ref{subsec:XSS}), but cannot be relied upon as the only security feature. There were 256 different character codes in ASCII, but now with UTF-8 there are more than a million valid valid character codes. The amount of characters are so overwhelming that any input filtering has to be whitelisting - "anything that isn't this is wrong".
+
+The work to do this is extensive, and it's nearly impossible to get right, so input filtering should just be seen as input filtering and not something that you can rely on to ensure the safety of your data and your users' data. This doesn't mean it's a bad idea, rather the opposite, but it's not in itself a sufficient safeguard unless you limit your users to a very small set of data.
+
+\subsection{Password Encryption}
+
+Encrypting and salting passwords is easily accomplished with the PostgreSQL's crypto module which contains the function \texttt{crypt} and \texttt{gen\_salt}. The user's password can be stored with the \texttt{crypt(\_password, gen\_salt('bf'))} and then logging in using \texttt{crypt(\_password, users.password)}.
+
+This hashes the users' passwords with Blowfish and creates a unique salt for each user.
+
+\subsection{XSS}
+\label{subsec:XSS}
+
+To protect from XSS, one early step one can accomplish is to insert \texttt{htmlentities(\$unsafe\_variable, ENT\_QUOTES);} everywhere where potentially unsafe input is parsed.
+
+For this specific application, this is rather sufficient together with not allowing anything that is inserted by users in \texttt{script}-tags or within HTML-style comments.
+
+Another important step is to disallow JavaScript from accessing the cookies by setting the \texttt{http\_only} property on them. This can be done in PHP with 
+
+\begin{lstlisting}[language=PHP]
+\texttt{setcookie("cookie_name", $content, null, '/', null, $https_only, true);}
+\end{lstlisting}
+
+\subsection{Impersonation}
+
+By using the advices from section \ref{subsec:XSS} about XSS, some factors of impersonation may be stopped by simply not having the browser send the session to an attacker by means of JavaScript queries.
+
+To prevent man-in-the-middle style impersonation attacks, enabling secure cookies (by setting the secure flag) and forcing at least every logged in user to use HTTPS is a good practice. HTTPS and TLS attacks are covered in section \ref{subsec:SSL}.
+
+Any sensible site uses sessions, both for the practicality of it and for thwarting attackers. By rolling the session storage within the database rather than withing the PHP-application, these can be stored over long term, and you may have multiple fronting servers. It also enables every query to check for impersonation by comparing both the username and the session key stored within the cookies with the sessions of the database. Thus changing either will lead to an immediate logging out.
+
+\subsection{TLS Encryption}
+\label{subsec:SSL}
+
+Previously, HTTP over TLS was seen as something that should be enabled for pages where the user inputs sensitive data, but with regard to man in the middle sessions-stealing, espionage, ISP-customer tracking and the fact that Google have decided to rank sites that supports HTTP Strict Transport Security (which means no insecure HTTP-connections allowed to the server), this reasoning is today deprecated.
+
+The only way of ever securing your users adequately is by never allowing them to not use insecure connections to you, ever. It'll also give you a boost in the PageRank-algorithm that is used by Google\footnote{https://blog.digicert.com/google-gives-ssl-secured-sites-search-ranking-boost}, there is simply no reasoning behind not using HTTPS for everything that ever handles any kind of input or is available on the public internet.
+
+Previously, browsers didn't always cache the content for users when downloading over HTTPS, but this is now false as the content needs to be explicitly excluded from caching to not be cached when applicable, and this only applies to shared caches nowadays, and could motivate you to not use HTTPS on content heavy sites that might have larger amounts of visitors from a non-local area.
+
+Having kept the load size of the recipe site under ~300 KB, this is not applicable for anyone creating the site described within these reports.
+
+\subsection{AJAX}
+
+Sending and receiving data through AJAX is quite simple (despite the JavaScript syntax). To send data through AJAX, you send a POST-request to a specially prepared page that is made to receive data on the server end, and to receive data content through AJAX, a page containing either JSON or XML with the relevant data fetched with a GET-request is one of the more obvious ways of solving this.
+
+\newpage
+
+\section{Result}
+\label{sec:results}
+
+\subsection{Filesystem Security}
+
+All the content within the project has permissions using
+
+\begin{lstlisting}
+unary # chown -R user:apache *
+unary $ chmod -R 755 $(find `pwd` -type d)
+unary $ chmod -R 640 $(find `pwd` -type f)
+\end{lstlisting}
+
+This limits the readability for files to all users except for the Apache user and the user \textbf{user} which is used to update files.
+
+The \texttt{httpd.conf} file that regulates the Apache web server's runtime variables contains the following information regarding filesystem structure\marginpar{This is far from the full content of \texttt{httpd.conf}} that limits the web server to fetch documents from within the \texttt{/var/www/html} directory tree.
+
+\begin{lstlisting}
+<Directory />
+    AllowOverride none
+    Require all denied
+</Directory>
+
+<Directory "/var/www/html">
+    Options Indexes FollowSymLinks
+    AllowOverride All 
+    Require all granted
+</Directory>
+
+\end{lstlisting}
+
+Furthermore, the php.ini-file has\marginpar{This is also only excerpts from \texttt{php.ini}} been modified to prevent the malicious user from uploading files to the server which can then be executed or otherwise used for malicious usage. Furthermore, server side development error messages are suppressed to avoid sending messages that might be confusing for the end user and slightly useful to a malicious user.
+
+\begin{lstlisting}
+display_errors = Off
+file_uploads = Off
+\end{lstlisting}
+
+\subsection{Input filtering}
+\label{subsec:input_filtering_result}
+
+Everywhere the username is inputted from the client, the following check is set to ensure that the usernames doesn't contain any character except the alphanumerics, \_- and spaces.
+
+\begin{lstlisting}                                                                                
+if (preg_match('/[^A-Za-z_\-0-9\ ]/', $username_unsafe))               
+	return "You may only have alphanumerics and \" _-\"                
+		in your username.";                                            
+             
+$username = htmlentities($username_unsafe, ENT_QUOTES);
+\end{lstlisting}
+
+Notable is how the \texttt{htmlentities} function is also the basis of the anti-XSS structure, which means it is the input filtering that is used for the comments in the following code
+
+\begin{lstlisting}
+$comment = htmlentities($comment_unsafe, ENT_QUOTES);
+\end{lstlisting}
+
+Likewise in the only place email is ever inserted, the following lines of code is used to verify that the email is sensible in terms of how email-addresses looks.
+
+\begin{lstlisting}
+if (preg_match('/.+@.+\..+/', $email_unsafe)) {                    
+    $email = $email_unsafe;
+\end{lstlisting}
+
+\subsection{Password Encryption}
+
+The password encryption is made within the database using the PostgreSQL \texttt{crypto}-module. This structure gives quite a few advantages - namely that the database can change the hashing algorithm by simply just changing the \texttt{gen\_salt} constant from e.g. "bf" to whatever new crypto is to be used, and the legacy users with legacy passwords can still log in without any other modifications of the system.
+
+\begin{lstlisting}
+CREATE OR REPLACE FUNCTION login(_username text, _pwd text, 
+    OUT _session_key text)
+    RETURNS text 
+AS $$
+DECLARE
+    _userid integer;
+BEGIN
+    _session_key := (SELECT crypt(_username || current_timestamp,
+        gen_salt('bf'))  FROM users
+            WHERE users.username = _username
+            AND password = crypt(_pwd, users.password));
+    _userid := (SELECT id FROM users WHERE username = _username);
+    INSERT INTO sessions (user_id, session) VALUES (_userid, _session_key);
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION add_user(INOUT _userid text, _pwd text, 
+    INOUT _email text)
+    RETURNS record
+AS $$
+BEGIN
+    INSERT INTO users(username, password, email)
+        VALUES (_userid, crypt(_pwd, gen_salt('bf')), _email);
+END;
+$$ LANGUAGE plpgsql;
+\end{lstlisting}
+
+\subsection{XSS}
+
+The XSS protection is implemented as described in section \ref{subsec:input_filtering_result} and section \ref{subsec:XSS} for the username and the comment (which is the user inputted data).
+
+\subsection{Impersonation}
+
+The impersonation protection works like the following:
+
+Except for the XSS protection described from section \ref{subsec:XSS}, the cookies that store the session (which is one session key and a username). The username and the session key is both needed to authenticate a session, and if either is off, the entire session is killed. When the user logs out, the session key is deleted from the database and is made unusable.
+
+Further, this should be improved by enforcing a number of browser characteristics to protect from a hacker, which is not yet implemented. Another tool for thwarting impersonation is forcing the cookies to be sent only over HTTPS as per section \ref{subsec:SSL}.
+
+\subsection{TLS Encryption}
+
+As per section \ref{subsec:SSL}. TLS is not implemented.
+
+\subsection{AJAX}
+
+By utilizing the JQuery AJAX calls, the submission of a new comment is made using the code by executing the following JavaScript-code when trying to submitting a new comment
+
+\begin{lstlisting}
+$.post('/new_comment', { r: recipe_name, c: comment})
+	.done(function() {
+		get_comments_json(recipe_name, name, obj_box);
+	}
+);
+\end{lstlisting}
+
+This is further specified in assignment 3, however modified with the \texttt{.done}-function that calls the \texttt{get\_comments\_json} function, which is set in
+
+\begin{lstlisting}
+function get_comments_json (recipe, name, obj_box) {
+	$.get("/recipes/" + recipe + "/comments.json",
+		function(msg) {
+		var comment_array = $.parseJSON(msg);
+		var nc = "";
+		$.each(
+			comment_array,
+			function (key, comment) {
+				nc += '<div class="comment">';
+				nc += '<div class="comment-meta">';
+				nc += '<b class="author">' + comment.username + '</b>';
+				if (name == comment.username) {
+					nc += "<a class=\"edit\"";
+					nc += "href=\"/edit/" + comment.id + "\">edit</a>";
+				}
+				nc += '<i class="date">' + comment.time_created + '</i>';
+				nc += '</div>';
+				nc += '<div class="comment-text">';
+				nc += comment.comment;
+				nc += '</div>';
+			}
+		);
+		$(".comment").remove();
+		$(obj_box).prepend(nc);
+		}
+	);
+}
+\end{lstlisting}
+
+The \texttt{get\_comments\_json} function fetches all the comments as objects in an JSON-array from the \texttt{recipes/RECIPE\_NAME/comments.json} which is simply reuse of the \texttt{get\_comments} into a new Flight-directive defined as
+
+\begin{lstlisting}
+Flight::route('/recipes/@recipe/comments.json', function($recipe) {
+	$json_comments = json_encode(get_comments($recipe));
+	echo $json_comments;
+});
+\end{lstlisting}
+
+If deployed to production, it would be sensible to extend this code with output filtering and such, but since the input filtering is extensive and the time is limited, these two lines of code is sufficient for this case, and it's quite a neat way of doing stuff: Letting the database decide what is sent to the client, no matter if this client is a PHP or Python one. Moving from one back-end to another is super simple with this model.
+
+\newpage
+\section{Discussion}
+
+The implementation of security isn't supposedly an afterthought. Many of the steps in this task was already implemented at the beginning of this task, as something that was there from the very beginning. This can be seen in my assignment 3 report for ID1354.
+
+There is not much further to add to this report that isn't mentioned in the method or the result.
+
+\end{document}
